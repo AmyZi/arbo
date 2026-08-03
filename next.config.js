@@ -4,6 +4,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: { unoptimized: true },
+  serverExternalPackages: ['@react-email/render'],
 };
 
 module.exports = nextConfig;
