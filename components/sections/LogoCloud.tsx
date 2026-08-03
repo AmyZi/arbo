@@ -20,7 +20,7 @@ export function LogoCloud() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>
           <p className="text-center text-sm font-medium text-muted-foreground">
-            Powering growth for small businesses from local shops to online brands
+            Powering Growth for small businesses from local shops to online brands
           </p>
         </Reveal>
         <div className="mt-6 overflow-hidden mask-fade-edges">

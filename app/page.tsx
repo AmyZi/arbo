@@ -31,9 +31,9 @@ export default function Home() {
     url: siteConfig.url,
     slogan: siteConfig.tagline,
     sameAs: [
-      'https://twitter.com/growth101',
-      'https://github.com/growth101',
-      'https://www.linkedin.com/company/growth101',
+      'https://twitter.com/Arbo',
+      'https://github.com/Arbo',
+      'https://www.linkedin.com/company/Arbo',
     ],
   };
 

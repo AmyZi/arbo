@@ -21,6 +21,7 @@ function GetStartedForm() {
   const planParam = (searchParams.get('plan') ?? '') as PlanId;
 
   const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
+  const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -39,13 +40,23 @@ function GetStartedForm() {
     e.preventDefault();
     if (!form.name || !form.email) return;
     setStatus('loading');
+    setError(null);
     try {
-      // TODO: wire this up to your own backend / CRM / email provider, e.g.:
-      // await fetch('/api/lead', { method: 'POST', body: JSON.stringify(form) });
-      await new Promise((resolve) => setTimeout(resolve, 900));
+      const res = await fetch('/api/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.error ?? 'Something went wrong.');
+      }
+
       setStatus('success');
-    } catch {
+    } catch (err) {
       setStatus('idle');
+      setError(err instanceof Error ? err.message : 'Something went wrong.');
     }
   }
 
@@ -192,8 +203,14 @@ function GetStartedForm() {
         )}
       </button>
 
+      {error && (
+        <p role="alert" className="text-center text-sm text-red-600 dark:text-red-400">
+          {error}
+        </p>
+      )}
+
       <p className="text-center text-xs text-muted-foreground">
-        No spam, ever. We&apos;ll only use this to reach out about your growth plan.
+        No spam, ever. We&apos;ll only use this to reach out about your Growth plan.
       </p>
     </form>
   );
@@ -221,7 +238,7 @@ export default function GetStartedPage() {
               </h1>
               <p className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground">
                 Whether you want a free audit, help ranking locally, or a
-                custom-built growth engine, this is the fastest way to reach
+                custom-built Growth engine, this is the fastest way to reach
                 us. We reply within 1 business day.
               </p>
             </Reveal>

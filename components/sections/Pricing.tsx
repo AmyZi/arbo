@@ -10,7 +10,7 @@ const tiers = [
     price: '$0',
     cadence: 'completely free',
     description:
-      'Evaluate your current website performance and uncover hidden growth opportunities.',
+      'Evaluate your current website performance and uncover hidden Growth opportunities.',
     features: [
       'Full Website & Technical SEO Audit',
       '1-on-1 Development & Strategy Session (30 mins)',

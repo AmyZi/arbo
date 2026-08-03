@@ -16,13 +16,13 @@ const sora = Sora({
   weight: ['400', '500', '600', '700', '800'],
 });
 
-const siteUrl = 'https://growth101.example.com';
+const siteUrl = 'https://Arbo.example.com';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'Growth101 — Get More Small Business Customers, On Autopilot',
-    template: '%s · Growth101',
+    default: 'Arbo — Get More Small Business Customers, On Autopilot',
+    template: '%s · Arbo',
   },
   description:
     'A high-converting system built to help small business owners get small business customers, grow their small business, and scale revenue \u2014 without wasted ad spend or 80-hour weeks.',
@@ -33,32 +33,32 @@ export const metadata: Metadata = {
     'small business marketing',
     'scale small business',
     'small business leads',
-    'small business growth',
+    'small business Growth',
   ],
-  authors: [{ name: 'Growth101' }],
-  creator: 'Growth101',
+  authors: [{ name: 'Arbo' }],
+  creator: 'Arbo',
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: siteUrl,
-    siteName: 'Growth101',
-    title: 'Growth101 — Get More Small Business Customers, On Autopilot',
+    siteName: 'Arbo',
+    title: 'Arbo — Get More Small Business Customers, On Autopilot',
     description:
-      'The small business growth system \u2014 targeted customer acquisition, a high-converting funnel, and automation built to help small business owners scale revenue.',
+      'The small business Growth system \u2014 targeted customer acquisition, a high-converting funnel, and automation built to help small business owners scale revenue.',
     images: [
       {
         url: '/og-image.png',
-        alt: 'Growth101 \u2014 Small Business Growth System',
+        alt: 'Arbo \u2014 Small Business Growth System',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Growth101 — Get More Small Business Customers, On Autopilot',
+    title: 'Arbo — Get More Small Business Customers, On Autopilot',
     description:
       'Attract customers, convert leads, and scale your small business \u2014 without the guesswork or wasted ad spend.',
     images: ['/og-image.png'],
-    creator: '@growth101',
+    creator: '@Arbo',
   },
   robots: {
     index: true,

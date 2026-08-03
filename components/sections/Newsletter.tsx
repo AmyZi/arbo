@@ -106,7 +106,7 @@ export function Newsletter() {
             )}
 
             <p className="mt-4 text-xs text-muted-foreground">
-              We&apos;ll show you your custom growth plan. No spam, ever.
+              We&apos;ll show you your custom Growth plan. No spam, ever.
             </p>
           </div>
         </motion.div>

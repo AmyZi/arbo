@@ -13,7 +13,7 @@ export function Footer() {
                 <Sparkles className="h-5 w-5" />
               </span>
               <span className="font-display text-lg font-bold tracking-tight">
-                Growth<span className="text-gradient-warm">101</span>
+                AR<span className="text-gradient-warm">BO</span>
               </span>
             </Link>
             <p className="mt-4 max-w-xs text-sm text-muted-foreground">
