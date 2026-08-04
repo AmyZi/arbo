@@ -8,15 +8,15 @@ import { Newsletter } from '@/components/sections/Newsletter';
 import { GradientText } from '@/components/motion/Reveal';
 
 export const metadata: Metadata = {
-  title: 'Blog — Small business Growth insights',
+  title: 'Blog — Small business growth insights',
   description:
-    'Field notes on getting more small business customers: lead generation tactics, funnel fixes, and case studies from real small business Growth campaigns.',
-  alternates: { canonical: 'https://Arbo.example.com/blog' },
+    'Field notes on getting more small business customers: lead generation tactics, funnel fixes, and case studies from real small business growth campaigns.',
+  alternates: { canonical: 'https://arboweb.com/blog' },
   openGraph: {
-    title: 'Blog — Small business Growth insights',
+    title: 'Blog — Small business growth insights',
     description:
       'Field notes on getting more small business customers: lead generation tactics, funnel fixes, and case studies from real campaigns.',
-    url: 'https://Arbo.example.com/blog',
+    url: 'https://arboweb.com/blog',
   },
 };
 

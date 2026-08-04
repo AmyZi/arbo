@@ -1,3 +1,4 @@
+// @ts-ignore: side-effect import for global CSS (handled by Next.js)
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter, Sora } from 'next/font/google';
@@ -16,7 +17,7 @@ const sora = Sora({
   weight: ['400', '500', '600', '700', '800'],
 });
 
-const siteUrl = 'https://Arbo.example.com';
+const siteUrl = 'https://arboweb.com';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -33,7 +34,7 @@ export const metadata: Metadata = {
     'small business marketing',
     'scale small business',
     'small business leads',
-    'small business Growth',
+    'small business growth',
   ],
   authors: [{ name: 'Arbo' }],
   creator: 'Arbo',
@@ -44,7 +45,7 @@ export const metadata: Metadata = {
     siteName: 'Arbo',
     title: 'Arbo — Get More Small Business Customers, On Autopilot',
     description:
-      'The small business Growth system \u2014 targeted customer acquisition, a high-converting funnel, and automation built to help small business owners scale revenue.',
+      'The small business growth system \u2014 targeted customer acquisition, a high-converting funnel, and automation built to help small business owners scale revenue.',
     images: [
       {
         url: '/og-image.png',
