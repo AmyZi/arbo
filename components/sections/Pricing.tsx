@@ -1,16 +1,19 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Check, ArrowRight } from 'lucide-react';
+import { Check, ArrowRight, Loader2 } from 'lucide-react';
 import { Reveal, Stagger, fadeInUp, GradientText } from '@/components/motion/Reveal';
+import type { LocalPrice } from '@/lib/geo-pricing';
 
 const tiers = [
   {
     name: 'Audit & Strategy',
+    planId: 'audit',
     price: '$0',
     cadence: 'completely free',
     description:
-      'Evaluate your current website performance and uncover hidden Growth opportunities.',
+      'Evaluate your current website performance and uncover hidden growth opportunities.',
     features: [
       'Full Website & Technical SEO Audit',
       '1-on-1 Development & Strategy Session (30 mins)',
@@ -23,6 +26,7 @@ const tiers = [
   },
   {
     name: 'Rank & Track',
+    planId: 'rank',
     price: '$49',
     cadence: 'month ($39/mo billed annually)',
     description:
@@ -41,6 +45,7 @@ const tiers = [
   },
   {
     name: 'Custom Build & Scale',
+    planId: 'custom',
     price: 'Custom',
     cadence: 'talk to us',
     description:
@@ -59,6 +64,23 @@ const tiers = [
 ];
 
 export function Pricing() {
+  const [localPrice, setLocalPrice] = useState<LocalPrice | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/geo-price')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data: LocalPrice | null) => {
+        if (!cancelled && data) setLocalPrice(data);
+      })
+      .catch(() => {
+        // Silent fail — tiers just show standard USD pricing.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <section id="pricing" className="relative py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -75,55 +97,76 @@ export function Pricing() {
         </Reveal>
 
         <Stagger className="mt-16 grid gap-6 lg:grid-cols-3">
-          {tiers.map((tier) => (
-            <motion.div
-              key={tier.name}
-              variants={fadeInUp}
-              whileHover={{ y: -6 }}
-              className={`relative flex flex-col rounded-3xl border p-7 transition-shadow ${
-                tier.highlighted
-                  ? 'border-orange-500/50 bg-gradient-to-b from-orange-500/5 to-background shadow-2xl shadow-orange-500/10'
-                  : 'border-slate-200/60 bg-card shadow-sm hover:shadow-xl dark:border-white/10'
-              }`}
-            >
-              {tier.highlighted && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-warm px-3 py-1 text-xs font-semibold text-white shadow-lg">
-                  Most Popular
-                </span>
-              )}
-              <h3 className="font-display text-lg font-semibold text-foreground">
-                {tier.name}
-              </h3>
-              <div className="mt-3 flex items-baseline gap-1.5">
-                <span className="font-display text-4xl font-extrabold tracking-tight text-foreground">
-                  {tier.price}
-                </span>
-                <span className="text-sm text-muted-foreground">/ {tier.cadence}</span>
-              </div>
-              <p className="mt-2 text-sm text-muted-foreground">{tier.description}</p>
+          {tiers.map((tier) => {
+            const isRankTier = tier.planId === 'rank';
+            const showLocalPrice = isRankTier && localPrice && !localPrice.isUS;
 
-              <ul className="mt-6 flex-1 space-y-3">
-                {tier.features.map((f) => (
-                  <li key={f} className="flex items-start gap-2.5 text-sm">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-orange-500" />
-                    <span className="text-foreground">{f}</span>
-                  </li>
-                ))}
-              </ul>
+            const displayPrice = showLocalPrice ? localPrice!.formatted : tier.price;
+            const displayCadence = showLocalPrice
+              ? `month, est. in ${localPrice!.currency}`
+              : tier.cadence;
 
-              <a
-                href="#newsletter"
-                className={`group mt-7 inline-flex h-11 items-center justify-center gap-1.5 rounded-xl text-sm font-semibold transition ${
+            return (
+              <motion.div
+                key={tier.name}
+                variants={fadeInUp}
+                whileHover={{ y: -6 }}
+                className={`relative flex flex-col rounded-3xl border p-7 transition-shadow ${
                   tier.highlighted
-                    ? 'bg-gradient-warm text-white shadow-lg shadow-orange-500/25 hover:brightness-105'
-                    : 'border border-input bg-background text-foreground hover:bg-muted'
+                    ? 'border-orange-500/50 bg-gradient-to-b from-orange-500/5 to-background shadow-2xl shadow-orange-500/10'
+                    : 'border-slate-200/60 bg-card shadow-sm hover:shadow-xl dark:border-white/10'
                 }`}
               >
-                {tier.cta}
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-              </a>
-            </motion.div>
-          ))}
+                {tier.highlighted && (
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-warm px-3 py-1 text-xs font-semibold text-white shadow-lg">
+                    Most Popular
+                  </span>
+                )}
+                <h3 className="font-display text-lg font-semibold text-foreground">
+                  {tier.name}
+                </h3>
+                <div className="mt-3 flex items-baseline gap-1.5">
+                  <span className="font-display text-4xl font-extrabold tracking-tight text-foreground">
+                    {displayPrice}
+                  </span>
+                  <span className="text-sm text-muted-foreground">/ {displayCadence}</span>
+                </div>
+                {isRankTier && !localPrice && (
+                  <span className="mt-1 inline-flex items-center gap-1 text-xs text-muted-foreground">
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                    Checking local pricing...
+                  </span>
+                )}
+                {showLocalPrice && (
+                  <span className="mt-1 text-xs text-muted-foreground">
+                    Estimated from $50 USD — final price confirmed at checkout.
+                  </span>
+                )}
+                <p className="mt-2 text-sm text-muted-foreground">{tier.description}</p>
+
+                <ul className="mt-6 flex-1 space-y-3">
+                  {tier.features.map((f) => (
+                    <li key={f} className="flex items-start gap-2.5 text-sm">
+                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-orange-500" />
+                      <span className="text-foreground">{f}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <a
+                  href={`/get-started?plan=${tier.planId}`}
+                  className={`group mt-7 inline-flex h-11 items-center justify-center gap-1.5 rounded-xl text-sm font-semibold transition ${
+                    tier.highlighted
+                      ? 'bg-gradient-warm text-white shadow-lg shadow-orange-500/25 hover:brightness-105'
+                      : 'border border-input bg-background text-foreground hover:bg-muted'
+                  }`}
+                >
+                  {tier.cta}
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                </a>
+              </motion.div>
+            );
+          })}
         </Stagger>
       </div>
     </section>
