@@ -60,7 +60,7 @@ export const problemSolutions: ProblemSolution[] = [
   {
     pain: 'One great month, two dry ones. Your revenue is a rollercoaster you never agreed to ride.',
     solution:
-      'A predictable, repeatable Growth engine that turns feast-or-famine into consistent, soaring revenue.',
+      'A predictable, repeatable growth engine that turns feast-or-famine into consistent, soaring revenue.',
     icon: TrendingUp,
   },
   {
@@ -179,7 +179,7 @@ export const testimonials: Testimonial[] = [
   },
   {
     quote:
-      'I went from feast-or-famine to fully booked. This system finally gave my small business the predictable Growth I\u2019d been chasing for years.',
+      'I went from feast-or-famine to fully booked. This system finally gave my small business the predictable growth I\u2019d been chasing for years.',
     name: 'Priya Nathan',
     role: 'Founder',
     company: 'Nathan & Co. Studio',
@@ -220,9 +220,9 @@ export const siteConfig = {
   name: 'Arbo',
   tagline: 'Get More Small Business Customers, On Autopilot',
   description:
-    'The small business Growth system \u2014 targeted customer acquisition, a high-converting funnel, and automation built to help small business owners get more customers and scale revenue.',
-  url: 'https://Arbo.example.com',
-  email: 'hello@Arbo.example.com',
+    'The small business growth system \u2014 targeted customer acquisition, a high-converting funnel, and automation built to help small business owners get more customers and scale revenue.',
+  url: 'https://arboweb.com',
+  email: 'hello@arboweb.com',
 };
 
 export const aiCapabilities = [
