@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Check, ArrowRight, Loader2 } from 'lucide-react';
 import { Reveal, Stagger, fadeInUp, GradientText } from '@/components/motion/Reveal';
-import type { LocalPrice } from '@/lib/geo-pricing';
+import { formatCurrencyAmount, type LocalPrice } from '@/lib/geo-pricing';
 
 const tiers = [
   {
@@ -99,12 +99,20 @@ export function Pricing() {
         <Stagger className="mt-16 grid gap-6 lg:grid-cols-3">
           {tiers.map((tier) => {
             const isRankTier = tier.planId === 'rank';
-            const showLocalPrice = isRankTier && localPrice && !localPrice.isUS;
+            const isAuditTier = tier.planId === 'audit';
+            const hasLocalCurrency = localPrice && !localPrice.isUS;
 
-            const displayPrice = showLocalPrice ? localPrice!.formatted : tier.price;
-            const displayCadence = showLocalPrice
-              ? `month, est. in ${localPrice!.currency}`
-              : tier.cadence;
+            let displayPrice = tier.price;
+            let displayCadence = tier.cadence;
+
+            if (isRankTier && hasLocalCurrency) {
+              displayPrice = localPrice!.formatted;
+              displayCadence = `month, est. in ${localPrice!.currency}`;
+            } else if (isAuditTier && hasLocalCurrency) {
+              // $0 converts to 0 in any currency — no rate needed, just the
+              // right symbol/formatting so it doesn't look stuck on USD.
+              displayPrice = formatCurrencyAmount(localPrice!.currency, 0);
+            }
 
             return (
               <motion.div
@@ -131,13 +139,13 @@ export function Pricing() {
                   </span>
                   <span className="text-sm text-muted-foreground">/ {displayCadence}</span>
                 </div>
-                {isRankTier && !localPrice && (
+                {(isRankTier || isAuditTier) && !localPrice && (
                   <span className="mt-1 inline-flex items-center gap-1 text-xs text-muted-foreground">
                     <Loader2 className="h-3 w-3 animate-spin" />
                     Checking local pricing...
                   </span>
                 )}
-                {showLocalPrice && (
+                {isRankTier && hasLocalCurrency && (
                   <span className="mt-1 text-xs text-muted-foreground">
                     Estimated from $50 USD — final price confirmed at checkout.
                   </span>

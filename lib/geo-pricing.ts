@@ -59,6 +59,14 @@ const countryToCurrency: Record<string, { currency: string; rate: number }> = {
   EG: { currency: 'EGP', rate: 49.5 },
 };
 
+export function formatCurrencyAmount(currency: string, amount: number): string {
+  return new Intl.NumberFormat('en', {
+    style: 'currency',
+    currency,
+    maximumFractionDigits: 0,
+  }).format(amount);
+}
+
 export interface LocalPrice {
   isUS: boolean;
   country: string;
@@ -87,11 +95,7 @@ export function getLocalPrice(countryCode: string | null | undefined, usdAmount:
   }
 
   const converted = Math.round(usdAmount * info.rate);
-  const formatted = new Intl.NumberFormat('en', {
-    style: 'currency',
-    currency: info.currency,
-    maximumFractionDigits: 0,
-  }).format(converted);
+  const formatted = formatCurrencyAmount(info.currency, converted);
 
   return {
     isUS: false,
