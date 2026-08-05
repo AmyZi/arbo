@@ -62,7 +62,7 @@ export function Navbar() {
 
         <div className="hidden items-center gap-3 md:flex">
           <Link
-            href="/blog"
+            href="/get-started"
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
             Contact Us

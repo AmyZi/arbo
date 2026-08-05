@@ -47,7 +47,7 @@ function WorkflowMockup() {
             <span className="h-3 w-3 rounded-full bg-green-400" />
           </div>
           <span className="rounded-md bg-muted px-2.5 py-1 font-mono text-xs text-muted-foreground">
-            Growth.engine
+            growth.engine
           </span>
         </div>
 

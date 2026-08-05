@@ -14,7 +14,7 @@ export function Workflow() {
             How it works
           </span>
           <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Four steps to <GradientText>predictable Growth</GradientText>
+            Four steps to <GradientText>predictable growth</GradientText>
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
             A single system that takes you from an empty pipeline to a

@@ -20,6 +20,13 @@ function GetStartedForm() {
   const searchParams = useSearchParams();
   const planParam = (searchParams.get('plan') ?? '') as PlanId;
 
+  // Captured once, on first render — used server-side to reject
+  // submissions that arrive suspiciously fast (bots don't "read" the form).
+  const [renderedAt] = useState(() => Date.now());
+  // Honeypot — a field real visitors never see or fill. Any bot that
+  // blindly fills every input on the page will fill this too.
+  const [companyUrl, setCompanyUrl] = useState('');
+
   const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
   const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState({
@@ -45,7 +52,7 @@ function GetStartedForm() {
       const res = await fetch('/api/lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, company_url: companyUrl, renderedAt }),
       });
 
       if (!res.ok) {
@@ -83,6 +90,25 @@ function GetStartedForm() {
       onSubmit={handleSubmit}
       className="mx-auto grid max-w-2xl gap-5 rounded-3xl border border-slate-200/60 bg-card p-6 shadow-xl shadow-black/[0.03] dark:border-white/10 sm:p-8"
     >
+      {/* Honeypot — real visitors never see this. Positioned off-screen
+          rather than display:none, since some bots skip hidden inputs
+          but not ones that are merely off-canvas. */}
+      <div
+        aria-hidden="true"
+        style={{ position: 'absolute', left: '-9999px', top: 0, height: 0, overflow: 'hidden' }}
+      >
+        <label htmlFor="company_url">Company URL</label>
+        <input
+          id="company_url"
+          name="company_url"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={companyUrl}
+          onChange={(e) => setCompanyUrl(e.target.value)}
+        />
+      </div>
+
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="flex flex-col gap-1.5">
           <label htmlFor="name" className="text-sm font-medium text-foreground">
@@ -210,7 +236,7 @@ function GetStartedForm() {
       )}
 
       <p className="text-center text-xs text-muted-foreground">
-        No spam, ever. We&apos;ll only use this to reach out about your Growth plan.
+        No spam, ever. We&apos;ll only use this to reach out about your growth plan.
       </p>
     </form>
   );
@@ -238,7 +264,7 @@ export default function GetStartedPage() {
               </h1>
               <p className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground">
                 Whether you want a free audit, help ranking locally, or a
-                custom-built Growth engine, this is the fastest way to reach
+                custom-built growth engine, this is the fastest way to reach
                 us. We reply within 1 business day.
               </p>
             </Reveal>
