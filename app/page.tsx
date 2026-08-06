@@ -31,9 +31,8 @@ export default function Home() {
     url: siteConfig.url,
     slogan: siteConfig.tagline,
     sameAs: [
-      'https://twitter.com/Arbo',
-      'https://github.com/Arbo',
-      'https://www.linkedin.com/company/Arbo',
+      'https://twitter.com/Arboweb',
+      'https://www.linkedin.com/company/Arboweb',
     ],
   };
 
