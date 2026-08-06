@@ -8,15 +8,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const staticRoutes: MetadataRoute.Sitemap = [
     {
-      url: `${siteConfig.url}`,
+      url: siteConfig.url,
       lastModified: now,
       changeFrequency: 'weekly',
-      priority: 1,
+      priority: 1.0,
     },
     {
       url: `${siteConfig.url}/blog`,
       lastModified: now,
       changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${siteConfig.url}/pricing`,
+      lastModified: now,
+      changeFrequency: 'monthly',
       priority: 0.8,
     },
   ];

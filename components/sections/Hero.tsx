@@ -193,9 +193,9 @@ export function Hero() {
               transition={{ duration: 0.6, delay: 0.05 }}
               className="mt-6 font-display text-4xl font-extrabold leading-[1.05] tracking-tighter text-foreground sm:text-5xl lg:text-6xl"
             >
-              Turn Your Small Business Into a
+              Custom Web Development & SEO for
               <br className="hidden sm:block" />{' '}
-              <GradientText>Customer-Getting Machine</GradientText>
+              <GradientText>Small Businesses</GradientText>
             </motion.h1>
 
             <motion.p
@@ -205,8 +205,8 @@ export function Hero() {
               className="mx-auto mt-5 max-w-xl text-base text-muted-foreground sm:text-lg lg:mx-0"
             >
               Tired of feast-or-famine months, wasted ad spend, and marketing
-              that just doesn&apos;t convert? We help small business owners
-              attract the right customers, automatically — so you spend less
+              that just doesn&apos;t convert? Our small business web development and SEO engine helps owners
+              attract the right customers from Google automatically — so you spend less
               time chasing leads and more time running the business you built.
             </motion.p>
 

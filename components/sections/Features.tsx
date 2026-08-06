@@ -13,7 +13,7 @@ export function Features() {
             Why it works
           </span>
           <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Everything you need to <GradientText>dominate your market</GradientText>
+            Small Business SEO & Web Engine Built to <GradientText>dominate your market</GradientText>
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
             One system for customer acquisition, conversion, and automation.

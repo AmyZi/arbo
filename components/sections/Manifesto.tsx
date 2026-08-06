@@ -14,7 +14,7 @@ export function Manifesto() {
             The problem
           </span>
           <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Most small business marketing fails to deliver.
+            How We Help Small Businesses Rank and Convert.
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
             Most small business marketing fails for one simple reason: it
