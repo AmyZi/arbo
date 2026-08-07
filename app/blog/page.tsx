@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, Clock, Calendar } from 'lucide-react';
 import { getAllPosts, formatDate, type PostMeta } from '@/lib/posts';
@@ -78,10 +79,13 @@ function FeaturedPost({ post }: { post: PostMeta }) {
           className="group grid overflow-hidden rounded-3xl border border-slate-200/60 bg-card shadow-sm transition-all hover:shadow-xl hover:shadow-orange-500/5 dark:border-white/10 lg:grid-cols-2"
         >
           <div className="relative aspect-[16/10] overflow-hidden bg-muted lg:aspect-auto">
-            <img
+            <Image
               src={post.cover}
-              alt=""
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              alt={`${post.title} small business SEO and web development article`}
+              fill
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              priority
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
           </div>
@@ -128,10 +132,12 @@ function PostCard({ post }: { post: PostMeta }) {
       className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200/60 bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-orange-500/5 dark:border-white/10"
     >
       <div className="relative aspect-[16/9] overflow-hidden bg-muted">
-        <img
+        <Image
           src={post.cover}
-          alt=""
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          alt={`${post.title} small business customer acquisition article`}
+          fill
+          sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </div>
       <div className="flex flex-1 flex-col p-6">

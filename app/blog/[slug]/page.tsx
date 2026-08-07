@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, Calendar, Clock, ArrowRight } from 'lucide-react';
 import {
@@ -145,12 +146,15 @@ export default function PostPage({ params }: Props) {
 
           {/* cover */}
           {post.cover && (
-            <div className="mx-auto max-w-4xl px-4 sm:px-6">
+            <div className="relative mx-auto max-w-4xl px-4 sm:px-6">
               <div className="-mt-8 aspect-[16/9] overflow-hidden rounded-2xl border border-border/60 bg-muted shadow-xl">
-                <img
+                <Image
                   src={post.cover}
-                  alt={post.title}
-                  className="h-full w-full object-cover"
+                  alt={`${post.title} small business SEO strategy`}
+                  fill
+                  sizes="(min-width: 768px) 896px, 100vw"
+                  className="object-cover"
+                  priority
                 />
               </div>
             </div>
@@ -195,10 +199,12 @@ function RelatedCard({ post }: { post: PostMeta }) {
       className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200/60 bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg dark:border-white/10"
     >
       <div className="relative aspect-[16/9] overflow-hidden bg-muted">
-        <img
+        <Image
           src={post.cover}
-          alt=""
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          alt={`${post.title} related small business growth article`}
+          fill
+          sizes="(min-width: 768px) 33vw, 100vw"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </div>
       <div className="flex flex-1 flex-col p-5">
