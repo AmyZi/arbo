@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Sparkles, Github, Twitter, Linkedin } from 'lucide-react';
+import { Sparkles, Instagram, Linkedin } from 'lucide-react';
 import { footerSections, siteConfig } from '@/lib/content';
 
 export function Footer() {
@@ -21,9 +21,8 @@ export function Footer() {
             </p>
             <div className="mt-5 flex items-center gap-3">
               {[
-                { Icon: Twitter, label: 'Twitter' },
-                { Icon: Github, label: 'GitHub' },
                 { Icon: Linkedin, label: 'LinkedIn' },
+                { Icon: Instagram, label: 'Instagram' },
               ].map(({ Icon, label }) => (
                 <a
                   key={label}
