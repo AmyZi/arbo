@@ -6,7 +6,7 @@ backend:
   # Points Decap at the OAuth proxy defined in app/api/auth and app/api/callback.
   base_url: https://arboweb.com
   auth_endpoint: api/auth
-
+local_backend: true
 # Every publish creates a commit directly on `branch` above. Flip this on
 # if you'd rather review a PR (via Decap's "Editorial Workflow") before
 # it goes live — recommended once more than one person is posting.
