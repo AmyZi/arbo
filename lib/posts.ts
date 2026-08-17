@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
 import { remark } from 'remark';
+import remarkGfm from 'remark-gfm';
 import remarkHtml from 'remark-html';
 import readingTime from 'reading-time';
 
@@ -65,7 +66,15 @@ export function getPostBySlug(slug: string): Post | null {
   const raw = fs.readFileSync(file, 'utf8');
   const { data, content } = matter(raw);
   const { text } = readingTime(content);
-  const processed = remark().use(remarkHtml).processSync(content);
+  // remarkGfm must run before remarkHtml — it's what teaches remark to
+  // recognize table syntax (and strikethrough, task lists, autolinks)
+  // in the first place. Without it, `remark` only understands CommonMark,
+  // which has no concept of tables at all — hence the raw `| --- |`
+  // text leaking straight into the rendered HTML.
+  const processed = remark()
+    .use(remarkGfm)
+    .use(remarkHtml, { sanitize: false })
+    .processSync(content);
   return {
     slug,
     title: data.title ?? slug,
