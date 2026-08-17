@@ -203,3 +203,20 @@
     @apply my-8 border-border/60;
   }
 }
+.prose-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+}
+
+.prose-content th,
+.prose-content td {
+  border: 1px solid hsl(var(--border));
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+.prose-content th {
+  background-color: hsl(var(--muted));
+  font-weight: 600;
+}
