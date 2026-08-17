@@ -5,6 +5,11 @@ import { remark } from 'remark';
 import remarkHtml from 'remark-html';
 import readingTime from 'reading-time';
 
+export type FaqEntry = {
+  question: string;
+  answer: string;
+};
+
 export type PostMeta = {
   slug: string;
   title: string;
@@ -19,6 +24,11 @@ export type PostMeta = {
 
 export type Post = PostMeta & {
   contentHtml: string;
+  metaDescription?: string;
+  targetKeyword?: string;
+  slugOverride?: string;
+  schemaTypes?: string[];
+  faqs?: FaqEntry[];
 };
 
 const postsDirectory = path.join(process.cwd(), 'content', 'blog');
@@ -40,7 +50,10 @@ export function getAllPosts(): PostMeta[] {
       authorRole: data.authorRole ?? 'Editorial',
       tags: data.tags ?? [],
       readingTime: text,
-      cover: data.cover ?? '',
+      // NOTE: was `data.cover`, but the Decap field is named `coverImage`.
+      // Falling back to `data.cover` too in case older posts were written
+      // by hand with that key — remove the fallback once content is clean.
+      cover: data.coverImage ?? data.cover ?? '',
     } as PostMeta;
   });
   return posts.sort((a, b) => (a.date < b.date ? 1 : -1));
@@ -62,8 +75,13 @@ export function getPostBySlug(slug: string): Post | null {
     authorRole: data.authorRole ?? 'Editorial',
     tags: data.tags ?? [],
     readingTime: text,
-    cover: data.cover ?? '',
+    cover: data.coverImage ?? data.cover ?? '',
     contentHtml: processed.toString(),
+    metaDescription: data.metaDescription ?? undefined,
+    targetKeyword: data.targetKeyword ?? undefined,
+    slugOverride: data.slugOverride ?? undefined,
+    schemaTypes: data.schemaTypes ?? [],
+    faqs: data.faqs ?? [],
   };
 }
 

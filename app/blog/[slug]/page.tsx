@@ -27,13 +27,14 @@ export function generateMetadata({ params }: Props): Metadata {
   const url = `${siteConfig.url}/blog/${post.slug}`;
   return {
     title: post.title,
-    description: post.description,
+    // Falls back to description if metaDescription wasn't set in the CMS.
+    description: post.metaDescription || post.description,
     authors: [{ name: post.author }],
     alternates: { canonical: url },
     openGraph: {
       type: 'article',
       title: post.title,
-      description: post.description,
+      description: post.metaDescription || post.description,
       url,
       publishedTime: post.date,
       authors: [post.author],
@@ -43,7 +44,7 @@ export function generateMetadata({ params }: Props): Metadata {
     twitter: {
       card: 'summary_large_image',
       title: post.title,
-      description: post.description,
+      description: post.metaDescription || post.description,
       images: post.cover ? [post.cover] : [],
     },
   };
@@ -82,12 +83,39 @@ export default function PostPage({ params }: Props) {
     keywords: post.tags.join(', '),
   };
 
+  // Only built when the CMS "FAQs" list is non-empty. Deliberately kept
+  // as a separate script tag rather than merged into jsonLd above —
+  // Google reads multiple ld+json blocks on one page fine, and keeping
+  // them separate means a malformed FAQ list can't break the core
+  // BlogPosting schema.
+  const faqJsonLd =
+    post.faqs && post.faqs.length > 0
+      ? {
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: post.faqs.map((faq) => ({
+            '@type': 'Question',
+            name: faq.question,
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: faq.answer,
+            },
+          })),
+        }
+      : null;
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
       <Navbar />
       <main className="pt-16">
         <article className="relative">

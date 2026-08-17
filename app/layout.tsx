@@ -3,7 +3,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Inter, Sora } from 'next/font/google';
 import { Toaster } from '@/components/ui/sonner';
-import { JsonLd } from '../components/JsonLd';
+import  {JsonLd}  from '@/components/JsonLd';
 import { siteConfig } from '@/lib/content';
 
 const inter = Inter({ 
@@ -110,9 +110,9 @@ const structuredData = [
     email: siteConfig.email,
     slogan: 'Custom Web Development & SEO for Small Businesses',
     sameAs: [
-      'https://twitter.com/ArboWeb',
       'https://www.linkedin.com/company/arboweb',
-      'https://github.com/arboweb'
+      'https://www.instagram.com/ArboWeb',
+      'https://www.tiktok.com/arboweb'
     ],
     knowsAbout: serviceCatalog,
     makesOffer: serviceCatalog.map((name) => ({

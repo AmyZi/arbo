@@ -28,6 +28,32 @@ collections:
       - { label: "Description", name: "description", widget: "text" }
       - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
       - { label: "Author", name: "author", widget: "string", default: "Growth101" }
-      - { label: "Cover Image", name: "coverImage", widget: "image" }
+      - { label: "Author Role", name: "authorRole", widget: "string", required: false, default: "Editorial" }
+      # Renamed from "coverImage" to "cover" to match what lib/posts.ts
+      # actually reads (data.cover). If you'd rather keep "coverImage"
+      # as the CMS-facing label, that's fine — just leave `name` as
+      # "cover" so the underlying frontmatter key still matches the code.
+      - { label: "Cover Image", name: "cover", widget: "image" }
       - { label: "Tags", name: "tags", widget: "list", default: ["Marketing"] }
+
+      # --- SEO fields ---
+      - { label: "Meta Description", name: "metaDescription", widget: "text", required: false, hint: "150–160 chars, shown in Google search results. Falls back to Description above if left blank." }
+      - { label: "Target Keyword", name: "targetKeyword", widget: "string", required: false, hint: "Primary keyword this post targets — for internal tracking, not rendered on page." }
+      - { label: "URL Slug Override", name: "slugOverride", widget: "string", required: false, hint: "Optional. Overrides the auto-generated slug." }
+      - label: "Schema Types"
+        name: "schemaTypes"
+        widget: "select"
+        multiple: true
+        required: false
+        options: ["FAQPage"]
+        hint: "Enable FAQPage structured data for this post (requires the FAQs list below to be filled in)."
+      - label: "FAQs"
+        name: "faqs"
+        widget: "list"
+        required: false
+        hint: "Populates the FAQPage schema. Leave empty if this post has no FAQ section."
+        fields:
+          - { label: "Question", name: "question", widget: "string" }
+          - { label: "Answer", name: "answer", widget: "text" }
+
       - { label: "Body", name: "body", widget: "markdown" }
