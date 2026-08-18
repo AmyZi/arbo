@@ -208,7 +208,7 @@
   overflow-x: auto;
   white-space: nowrap;
   -webkit-overflow-scrolling: touch;
-  width: 100%;
+  width: content;
   border-collapse: collapse;
   margin: 1.5rem 0;
 }
