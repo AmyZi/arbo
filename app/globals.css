@@ -203,6 +203,10 @@
     @apply my-8 border-border/60;
   }
 }
+.prose-content {
+  overflow-x: hidden;
+}
+
 .prose-content table {
   display: block;
   overflow-x: auto;
