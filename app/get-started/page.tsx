@@ -23,9 +23,11 @@ function GetStartedForm() {
   // Captured once, on first render — used server-side to reject
   // submissions that arrive suspiciously fast (bots don't "read" the form).
   const [renderedAt] = useState(() => Date.now());
-  // Honeypot — a field real visitors never see or fill. Any bot that
-  // blindly fills every input on the page will fill this too.
-  const [companyUrl, setCompanyUrl] = useState('');
+  // Honeypot — a checkbox real visitors never see, so it can never get
+  // checked by a human. (A text-field honeypot can get silently
+  // autofilled by the browser and false-positive on real submissions —
+  // checkboxes don't have that problem.)
+  const [confirmHuman, setConfirmHuman] = useState(false);
 
   const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
   const [error, setError] = useState<string | null>(null);
@@ -52,7 +54,7 @@ function GetStartedForm() {
       const res = await fetch('/api/lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, company_url: companyUrl, renderedAt }),
+        body: JSON.stringify({ ...form, confirm_human: confirmHuman, renderedAt }),
       });
 
       if (!res.ok) {
@@ -92,20 +94,22 @@ function GetStartedForm() {
     >
       {/* Honeypot — real visitors never see this. Positioned off-screen
           rather than display:none, since some bots skip hidden inputs
-          but not ones that are merely off-canvas. */}
+          but not ones that are merely off-canvas. Checkbox, not a text
+          field, so browser autofill can't silently check it for a real
+          visitor the way it could populate a text input. */}
       <div
         aria-hidden="true"
         style={{ position: 'absolute', left: '-9999px', top: 0, height: 0, overflow: 'hidden' }}
       >
-        <label htmlFor="company_url">Company URL</label>
+        <label htmlFor="confirm_human">Leave unchecked</label>
         <input
-          id="company_url"
-          name="company_url"
-          type="text"
+          id="confirm_human"
+          name="confirm_human"
+          type="checkbox"
           tabIndex={-1}
           autoComplete="off"
-          value={companyUrl}
-          onChange={(e) => setCompanyUrl(e.target.value)}
+          checked={confirmHuman}
+          onChange={(e) => setConfirmHuman(e.target.checked)}
         />
       </div>
 
