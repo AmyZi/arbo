@@ -207,16 +207,19 @@
   overflow-x: hidden;
 }
 
+/* Forces table to span full container width and scroll horizontally */
 .prose-content table {
   display: block;
+  width: 100%;
+  max-width: 100%;
   overflow-x: auto;
   white-space: nowrap;
   -webkit-overflow-scrolling: touch;
-  width: content;
   border-collapse: collapse;
   margin: 1.5rem 0;
 }
 
+/* Fixes the cell widths so they scale correctly inside the block table */
 .prose-content th,
 .prose-content td {
   border: 1px solid hsl(var(--border));
