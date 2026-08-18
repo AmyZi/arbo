@@ -203,31 +203,32 @@
     @apply my-8 border-border/60;
   }
 }
-.prose-content {
-  overflow-x: hidden;
-}
-
-/* Forces table to span full container width and scroll horizontally */
 .prose-content table {
-  display: block;
   width: 100%;
-  max-width: 100%;
-  overflow-x: auto;
-  white-space: nowrap;
-  -webkit-overflow-scrolling: touch;
+  table-layout: fixed;
   border-collapse: collapse;
   margin: 1.5rem 0;
 }
 
-/* Fixes the cell widths so they scale correctly inside the block table */
 .prose-content th,
 .prose-content td {
   border: 1px solid hsl(var(--border));
   padding: 0.5rem 0.75rem;
   text-align: left;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 .prose-content th {
   background-color: hsl(var(--muted));
   font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .prose-content th,
+  .prose-content td {
+    padding: 0.4rem 0.5rem;
+    font-size: 0.8125rem;
+  }
 }
