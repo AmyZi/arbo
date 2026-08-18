@@ -8,7 +8,7 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/api/*'],
     },
-    sitemap: `${siteConfig.url}/sitemap.xml`,
+    sitemap: `https://arboweb.com/sitemap.xml`,
     host: siteConfig.url,
   };
 }
