@@ -204,6 +204,10 @@
   }
 }
 .prose-content table {
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
   width: 100%;
   border-collapse: collapse;
   margin: 1.5rem 0;
