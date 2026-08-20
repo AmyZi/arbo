@@ -30,7 +30,7 @@ export interface BlogFrontmatter {
 }
 
 const SITE_NAME = "ArboWeb";
-const SITE_URL = "https://arboweb.com"; // update if this differs from your live domain
+const SITE_URL = "https://www.arboweb.com"; // update if this differs from your live domain
 
 /**
  * Builds the canonical URL for a post given its computed slug.

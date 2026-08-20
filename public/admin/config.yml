@@ -4,7 +4,7 @@ backend:
   repo: AmyZi/arbo
   branch: main
   # Points Decap at the OAuth proxy defined in app/api/auth and app/api/callback.
-  base_url: https://arboweb.com
+  base_url: https://www.arboweb.com
   auth_endpoint: api/auth
 local_backend: true
 # Every publish creates a commit directly on `branch` above. Flip this on

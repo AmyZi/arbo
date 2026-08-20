@@ -221,7 +221,7 @@ export const siteConfig = {
   tagline: 'Get More Small Business Customers, On Autopilot',
   description:
     'The small business growth system \u2014 targeted customer acquisition, a high-converting funnel, and automation built to help small business owners get more customers and scale revenue.',
-  url: 'https://arboweb.com',
+  url: 'https://www.arboweb.com',
   email: 'hello@arboweb.com',
 };
 

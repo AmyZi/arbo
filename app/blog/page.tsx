@@ -12,12 +12,12 @@ export const metadata: Metadata = {
   title: 'Blog — Small business growth insights',
   description:
     'Field notes on getting more small business customers: lead generation tactics, funnel fixes, and case studies from real small business growth campaigns.',
-  alternates: { canonical: 'https://arboweb.com/blog' },
+  alternates: { canonical: 'https://www.arboweb.com/blog' },
   openGraph: {
     title: 'Blog — Small business growth insights',
     description:
       'Field notes on getting more small business customers: lead generation tactics, funnel fixes, and case studies from real campaigns.',
-    url: 'https://arboweb.com/blog',
+    url: 'https://www.arboweb.com/blog',
   },
 };
 
