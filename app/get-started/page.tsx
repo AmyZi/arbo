@@ -11,9 +11,9 @@ import { Reveal, GlowBadge, GradientText } from '@/components/motion/Reveal';
 type PlanId = 'audit' | 'rank' | 'custom' | '';
 
 const planLabels: Record<Exclude<PlanId, ''>, string> = {
-  audit: 'Audit & Strategy (Free)',
-  rank: 'Rank & Track',
-  custom: 'Custom Build & Scale',
+  audit: 'Free SEO Audit & Strategy Call',
+  rank: 'Local SEO Ranking & Tracking',
+  custom: 'Custom Website Design & Growth Build',
 };
 
 function GetStartedForm() {
@@ -78,10 +78,11 @@ function GetStartedForm() {
       >
         <CheckCircle2 className="h-10 w-10 text-green-600 dark:text-green-400" />
         <h2 className="font-display text-xl font-bold text-foreground">
-          You&apos;re in! We&apos;ll be in touch shortly.
+          You&apos;re in! Your SEO audit request is on its way.
         </h2>
         <p className="text-sm text-muted-foreground">
-          Keep an eye on your inbox — we typically reply within 1 business day.
+          Keep an eye on your inbox — we typically reply within 1 business day
+          with next steps for your custom website and local SEO plan.
         </p>
       </motion.div>
     );
@@ -172,7 +173,7 @@ function GetStartedForm() {
 
         <div className="flex flex-col gap-1.5 sm:col-span-2">
           <label htmlFor="website" className="text-sm font-medium text-foreground">
-            Website (if you have one)
+            Current website (if you have one)
           </label>
           <input
             id="website"
@@ -209,7 +210,7 @@ function GetStartedForm() {
             rows={4}
             value={form.message}
             onChange={(e) => update('message', e.target.value)}
-            placeholder="Tell us about your business and what you're hoping to achieve."
+            placeholder="Tell us about your business, your current website (if any), and what you're hoping to achieve — more local customers, higher search rankings, a full site redesign, etc."
             className="rounded-xl border border-input bg-background px-4 py-3 text-sm shadow-sm outline-none transition focus:border-orange-500/60 focus:ring-2 focus:ring-orange-500/30"
           />
         </div>
@@ -227,7 +228,7 @@ function GetStartedForm() {
           </>
         ) : (
           <>
-            Send My Request
+            Get My Free SEO Audit
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
           </>
         )}
@@ -240,7 +241,8 @@ function GetStartedForm() {
       )}
 
       <p className="text-center text-xs text-muted-foreground">
-        No spam, ever. We&apos;ll only use this to reach out about your growth plan.
+        No spam, ever. We&apos;ll only use this to reach out about your website
+        and local SEO growth plan.
       </p>
     </form>
   );
@@ -259,17 +261,18 @@ export default function GetStartedPage() {
             <Reveal className="mx-auto max-w-2xl text-center">
               <GlowBadge className="mx-auto">
                 <Sparkles className="h-3.5 w-3.5" />
-                Let&apos;s grow your small business
+                Custom websites & local SEO for small businesses
               </GlowBadge>
               <h1 className="mt-6 font-display text-4xl font-extrabold tracking-tighter text-foreground sm:text-5xl">
-                Tell us about your business —
+                Get a custom small business website —
                 <br className="hidden sm:block" />{' '}
-                <GradientText>we&apos;ll take it from there.</GradientText>
+                <GradientText>built to rank, not just launch.</GradientText>
               </h1>
               <p className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground">
-                Whether you want a free audit, help ranking locally, or a
-                custom-built growth engine, this is the fastest way to reach
-                us. We reply within 1 business day.
+                Whether you want a free SEO audit, help ranking higher in
+                local search, or a fully custom-built, SEO-optimized website,
+                this is the fastest way to reach us. We reply within 1
+                business day.
               </p>
             </Reveal>
 
