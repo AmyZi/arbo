@@ -21,12 +21,14 @@ export function Footer() {
             </p>
             <div className="mt-5 flex items-center gap-3">
               {[
-                { Icon: Linkedin, label: 'LinkedIn' },
-                { Icon: Instagram, label: 'Instagram' },
-              ].map(({ Icon, label }) => (
+                { Icon: Linkedin, label: 'LinkedIn', href: 'https://linkedin.com/company/arboweb' },
+                { Icon: Instagram, label: 'Instagram', href: 'https://instagram.com/arboweb' },
+              ].map(({ Icon, label, href }) => (
                 <a
                   key={label}
-                  href="#"
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={label}
                   className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground transition-colors hover:border-orange-500/40 hover:text-orange-500"
                 >
