@@ -108,6 +108,13 @@ const structuredData = [
     url: siteUrl,
     logo: `${siteUrl}/logo.png`,
     email: siteConfig.email,
+    address: {
+        "@type": "PostalAddress",
+        streetAddress: "Gånghestersvägen 129",
+        addressLocality: "Borås",
+        postalCode: "507 62",
+        addressCountry: "SE",
+      },
     slogan: 'Custom Web Development & SEO for Small Businesses',
     sameAs: [
       'https://www.linkedin.com/company/arboweb',
