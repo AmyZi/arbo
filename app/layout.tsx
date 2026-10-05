@@ -101,13 +101,14 @@ const serviceCatalog = [
 const structuredData = [
   {
     '@context': 'https://schema.org',
-    '@type': 'Organization',
+    '@type': 'ProfessionalService',
     '@id': `${siteUrl}/#organization`,
     name: 'ArboWeb',
     alternateName: siteConfig.name,
     url: siteUrl,
     logo: `${siteUrl}/logo.png`,
     email: siteConfig.email,
+    telephone: '+46 73 735 00 19',
     address: {
         "@type": "PostalAddress",
         streetAddress: "Gånghestersvägen 129",
@@ -115,6 +116,7 @@ const structuredData = [
         postalCode: "507 62",
         addressCountry: "SE",
       },
+    areaServed: ['Worldwide', { '@type': 'Country', name: 'Sweden' }],
     slogan: 'Custom Web Development & SEO for Small Businesses',
     sameAs: [
       'https://www.linkedin.com/company/arboweb',
