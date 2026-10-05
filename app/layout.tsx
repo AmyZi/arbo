@@ -20,7 +20,7 @@ const sora = Sora({
 });
 
 const siteUrl = siteConfig.url;
-const ogImage = '/og-image.png';
+const ogImage = '/og-image.svg';
 
 export const viewport = {
   width: 'device-width',
