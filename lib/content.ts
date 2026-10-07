@@ -222,7 +222,7 @@ export const siteConfig = {
   description:
     'The small business growth system \u2014 targeted customer acquisition, a high-converting funnel, and automation built to help small business owners get more customers and scale revenue.',
   url: 'https://www.arboweb.com',
-  email: 'hello@arboweb.com',
+  email: 'contact@arboweb.com',
 };
 
 export const aiCapabilities = [

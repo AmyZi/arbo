@@ -10,42 +10,23 @@ import { Pricing } from '@/components/sections/Pricing';
 import { FAQ } from '@/components/sections/FAQ';
 import { Newsletter } from '@/components/sections/Newsletter';
 import { siteConfig } from '@/lib/content';
+import { baseNodes, webPage, graph } from "@/lib/schema";
+import { JsonLd } from "@/components/JsonLd";
 
 export default function Home() {
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: siteConfig.name,
-    url: siteConfig.url,
-    description: siteConfig.description,
-    potentialAction: {
-      '@type': 'SubscribeAction',
-      target: `${siteConfig.url}/#newsletter`,
-    },
-  };
-
-  const orgLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: siteConfig.name,
-    url: siteConfig.url,
-    slogan: siteConfig.tagline,
-    sameAs: [
-      'https://twitter.com/Arboweb',
-      'https://www.linkedin.com/company/Arboweb',
-    ],
-  };
+   const data = graph([
+    ...baseNodes(true),
+    webPage({
+      path: "/",
+      name: "ArboWeb | Web development and SEO for Swedish businesses", // match your real <title>
+      description: siteConfig.description, // match your meta description
+      lang: "en",
+    }),
+  ]);
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(orgLd) }}
-      />
+      <JsonLd data={data} />
       <Navbar />
       <main>
         <Hero />
