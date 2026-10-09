@@ -13,7 +13,7 @@ export const SITE = {
   slogan: siteConfig.tagline,
   description: siteConfig.description,
   legalName: "Arbo AB",
-  logo: `${siteConfig.url}/Arbologo.png`,
+  image: `${siteConfig.url}/Arbologo.png`,
   email: "contact@arboweb.com",
   sameAs: [
     "https://twitter.com/Arboweb",
@@ -48,7 +48,7 @@ export function organization(): Node {
     name: SITE.name,
     legalName: SITE.legalName,
     url: SITE.url,
-    logo: SITE.logo,
+    logo: SITE.image,
     description: SITE.description,
     slogan: SITE.slogan,
     email: SITE.email,
@@ -71,7 +71,7 @@ export function organizationRef(): Node {
     "@id": ORG_ID,
     name: SITE.name,
     url: SITE.url,
-    logo: SITE.logo,
+    logo: SITE.image,
   };
 }
 
