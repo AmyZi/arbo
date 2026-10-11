@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import {
   Sparkles,
   ShieldCheck,
@@ -173,7 +174,6 @@ export function Hero() {
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-8">
-          {/* left: copy + capture */}
           <div className="text-center lg:text-left">
             <motion.div
               initial={{ opacity: 0, y: 16 }}
@@ -183,7 +183,7 @@ export function Hero() {
             >
               <GlowBadge>
                 <Sparkles className="h-3.5 w-3.5" />
-                Built for Growing Businesses
+                Developer-led web development &amp; SEO
               </GlowBadge>
             </motion.div>
 
@@ -193,64 +193,48 @@ export function Hero() {
               transition={{ duration: 0.6, delay: 0.05 }}
               className="mt-6 font-display text-4xl font-extrabold leading-[1.05] tracking-tighter text-foreground sm:text-5xl lg:text-6xl"
             >
-              Custom Web Development & SEO for
+              Get found on Google by the customers who are
               <br className="hidden sm:block" />{' '}
-              <GradientText>Small Businesses</GradientText>
+              <GradientText>ready to buy</GradientText>
             </motion.h1>
 
+            {/* Subheading: a paragraph, not a heading tag */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.12 }}
               className="mx-auto mt-5 max-w-xl text-base text-muted-foreground sm:text-lg lg:mx-0"
             >
-              Tired of feast-or-famine months, wasted ad spend, and marketing
-              that just doesn&apos;t convert? Our small business web development and SEO engine helps owners
-              attract the right customers from Google automatically — so you spend less
-              time chasing leads and more time running the business you built.
+              Web development and SEO for small businesses in Sweden. The developer who
+              builds your website also works on your Google visibility, so there are no
+              account managers in between and nothing gets lost in handoffs. Start with a
+              free SEO analysis and see what&apos;s holding your site back.
             </motion.p>
 
-            <motion.form
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.18 }}
-              onSubmit={(e) => e.preventDefault()}
-              className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row lg:mx-0"
+              className="mt-8 flex justify-center lg:justify-start"
             >
-              <input
-                type="email"
-                required
-                placeholder="you@yourbusiness.com"
-                aria-label="Email address"
-                className="h-12 flex-1 rounded-xl border border-input bg-background px-4 text-sm shadow-sm outline-none ring-offset-background transition focus:border-orange-500/60 focus:ring-2 focus:ring-orange-500/30"
-              />
-              <button
-                type="submit"
-                className="group inline-flex h-12 items-center justify-center gap-1.5 rounded-xl bg-gradient-warm px-5 text-sm font-semibold text-white shadow-lg shadow-orange-500/25 transition hover:shadow-orange-500/40 hover:brightness-105"
+              <Link
+                href="/get-started?plan=audit"
+                className="group inline-flex h-12 items-center justify-center gap-1.5 rounded-xl bg-gradient-warm px-6 text-sm font-semibold text-white shadow-lg shadow-orange-500/25 transition hover:shadow-orange-500/40 hover:brightness-105"
               >
-                Get More Customers Today
+                Get my free SEO analysis
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-              </button>
-            </motion.form>
+              </Link>
+            </motion.div>
 
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.26 }}
-              className="mt-4 flex items-center justify-center gap-2 text-sm text-muted-foreground lg:justify-start"
+              className="mt-4 text-sm text-muted-foreground"
             >
-              <span className="flex -space-x-2">
-                {['bg-orange-500', 'bg-rose-500', 'bg-pink-500', 'bg-amber-500'].map(
-                  (c, i) => (
-                    <span
-                      key={i}
-                      className={`h-6 w-6 rounded-full border-2 border-background ${c}`}
-                    />
-                  )
-                )}
-              </span>
-              Trusted by 500+ local and digital small businesses
+              Free and no commitment. {/* Replace with a real proof point, e.g. a named client or a measured result */}
             </motion.p>
+
           </div>
 
           {/* right: animated mockup */}

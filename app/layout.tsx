@@ -106,7 +106,7 @@ const structuredData = [
     name: 'ArboWeb',
     alternateName: siteConfig.name,
     url: siteUrl,
-    logo: `${siteUrl}/logo.png`,
+    logo: `${siteUrl}/Arbologo.png`,
     email: siteConfig.email,
     telephone: '+46 73 735 00 19',
     address: {
