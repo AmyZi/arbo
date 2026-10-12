@@ -5,6 +5,8 @@ import { Inter, Sora } from 'next/font/google';
 import { Toaster } from '@/components/ui/sonner';
 import  {JsonLd}  from '@/components/JsonLd';
 import { siteConfig } from '@/lib/content';
+import { Footer } from '@/components/Footer';
+import { Navbar } from '@/components/Navbar';
 
 const inter = Inter({ 
   subsets: ['latin'], 
@@ -169,12 +171,16 @@ const structuredData = [
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${sora.variable}`} suppressHydrationWarning>
-      <body className="font-sans bg-background text-foreground">
-        <JsonLd data={structuredData} />
-        {children}
-        <Toaster />
-      </body>
-    </html>
+    <>
+      <html lang="en" className={`${inter.variable} ${sora.variable}`} suppressHydrationWarning>
+        <Navbar />
+        <body className="font-sans bg-background text-foreground">
+          <JsonLd data={structuredData} />
+          {children}
+          <Toaster />
+        <Footer />
+        </body>
+      </html>
+    </>
   );
 }

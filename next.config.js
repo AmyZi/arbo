@@ -5,6 +5,9 @@ const nextConfig = {
   },
   images: { unoptimized: true },
   serverExternalPackages: ['@react-email/render'],
+  experimental: {
+    serverActions: true,
+  },
 };
 
 module.exports = nextConfig;

@@ -8,6 +8,9 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { JsonLd } from '@/components/JsonLd';
 import { baseNodes, webPage, breadcrumbs, graph } from '@/lib/schema';
+import { submitLead } from './actions';
+import { Navbar } from '@/components/Navbar';
+import { Footer } from '@/components/Footer';
 
 const path = '/get-started';
 
@@ -66,24 +69,7 @@ const STEPS = [
   { title: 'You get a clear answer', text: 'What to fix, in what order, and what it would take.' },
 ];
 
-/* ------------------------------------------------------------------ */
-/* Form handler. Replace the TODO with your real delivery method.      */
-/* ------------------------------------------------------------------ */
-async function submitLead(formData: FormData) {
-  'use server';
-  const lead = {
-    name: String(formData.get('name') ?? '').trim(),
-    email: String(formData.get('email') ?? '').trim(),
-    website: String(formData.get('website') ?? '').trim(),
-    message: String(formData.get('message') ?? '').trim(),
-    plan: String(formData.get('plan') ?? 'audit'),
-  };
-  // Honeypot: real visitors never fill this hidden field.
-  if (String(formData.get('company') ?? '')) return;
-  // TODO: validate the fields, then send `lead` to your CMS, CRM or email service.
-  // TODO: redirect to a thank-you page after saving.
-  void lead;
-}
+
 
 /* ------------------------------------------------------------------ */
 /* Page                                                                */
@@ -92,9 +78,9 @@ export default async function GetStarted({
   searchParams,
 }: {
   // Next.js 15 passes searchParams as a Promise. On Next 14, remove the Promise and await.
-  searchParams: Promise<{ plan?: string }>;
+  searchParams: Promise<{ plan?: string; error?: string }>;
 }) {
-  const { plan: raw } = await searchParams;
+  const { plan: raw, error } = await searchParams;
   const plan: PlanKey = isPlan(raw) ? raw : 'audit';
   const copy = PLANS[plan];
 
@@ -153,6 +139,17 @@ export default async function GetStarted({
 
         {/* Right: the form */}
         <form action={submitLead} className="space-y-4 rounded-2xl border border-input bg-background p-6 shadow-sm">
+          {error === 'invalid' && (
+            <p role="alert" className="text-sm text-red-600">
+              Please check your details and try again.
+            </p>
+          )}
+          {error === 'send' && (
+            <p role="alert" className="text-sm text-red-600">
+              Something went wrong sending your request. Please email us at [EMAIL].
+            </p>
+          )}
+          
           <input type="hidden" name="plan" value={plan} />
           {/* Honeypot, hidden from people */}
           <input type="text" name="company" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
