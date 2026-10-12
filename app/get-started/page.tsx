@@ -1,290 +1,206 @@
-'use client';
+// app/get-started/page.tsx
+// Plan-aware intake page. ?plan=audit | rank | custom changes the copy only.
+// All variants share one canonical URL (/get-started), which fixes the
+// duplicate-URL and duplicate-schema findings from the Semrush audit.
 
-import { Suspense, useState, type FormEvent } from 'react';
-import { useSearchParams } from 'next/navigation';
-import { motion } from 'framer-motion';
-import { ArrowRight, CheckCircle2, Loader2, Sparkles } from 'lucide-react';
-import { Navbar } from '@/components/Navbar';
-import { Footer } from '@/components/Footer';
-import { Reveal, GlowBadge, GradientText } from '@/components/motion/Reveal';
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
+import { JsonLd } from '@/components/JsonLd';
+import { baseNodes, webPage, breadcrumbs, graph } from '@/lib/schema';
 
-type PlanId = 'audit' | 'rank' | 'custom' | '';
+const path = '/get-started';
 
-const planLabels: Record<Exclude<PlanId, ''>, string> = {
-  audit: 'Free SEO Audit & Strategy Call',
-  rank: 'Local SEO Ranking & Tracking',
-  custom: 'Custom Website Design & Growth Build',
+export const metadata: Metadata = {
+  title: 'Get your free SEO analysis | ArboWeb',
+  description:
+    'Tell us about your business and website. We review how you show up on Google and send back a clear list of what to fix first. Free and no commitment.',
+  alternates: { canonical: path }, // requires metadataBase in your root layout
 };
 
-function GetStartedForm() {
-  const searchParams = useSearchParams();
-  const planParam = (searchParams.get('plan') ?? '') as PlanId;
+/* ------------------------------------------------------------------ */
+/* Copy per plan. Edit the wording here, nowhere else.                 */
+/* ------------------------------------------------------------------ */
+const PLANS = {
+  audit: {
+    heading: 'Get your free SEO analysis',
+    intro:
+      'Tell us about your business and your website. We look at how you show up on Google today and send you a short, plain-language list of what to fix first.',
+    cta: 'Send me my free analysis',
+    gets: [
+      'A technical check: speed, mobile, indexing and structured data',
+      'How your site appears for the searches your customers actually use',
+      'A short list of fixes, ordered by what is likely to matter most',
+    ],
+  },
+  rank: {
+    heading: 'Grow your visibility on Google',
+    intro:
+      'Ongoing SEO from the developer who works on your site. Tell us where you are today and which customers you want to reach.',
+    cta: 'Tell us about your goals',
+    gets: [
+      'A starting audit of your site and your main search terms',
+      'Technical fixes and content planned together, not in separate silos',
+      'Reporting on enquiries and bookings, not just rankings',
+    ],
+  },
+  custom: {
+    heading: 'Get a website built to be found',
+    intro:
+      'A custom-built site with SEO designed in from day one, built directly by the developer you will be talking to.',
+    cta: 'Tell us about your project',
+    gets: [
+      'A direct conversation with the person who will build your site',
+      'Clean, fast code with SEO built into the structure',
+      'You own the site, the code and the accounts',
+    ],
+  },
+} as const;
 
-  // Captured once, on first render — used server-side to reject
-  // submissions that arrive suspiciously fast (bots don't "read" the form).
-  const [renderedAt] = useState(() => Date.now());
-  // Honeypot — a checkbox real visitors never see, so it can never get
-  // checked by a human. (A text-field honeypot can get silently
-  // autofilled by the browser and false-positive on real submissions —
-  // checkboxes don't have that problem.)
-  const [confirmHuman, setConfirmHuman] = useState(false);
+type PlanKey = keyof typeof PLANS;
+const isPlan = (v: string | undefined): v is PlanKey => !!v && v in PLANS;
 
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
-  const [error, setError] = useState<string | null>(null);
-  const [form, setForm] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    business: '',
-    website: '',
-    plan: planParam in planLabels ? planParam : ('' as PlanId),
-    message: '',
-  });
+const STEPS = [
+  { title: 'You tell us the basics', text: 'Your business, your website and what you want more of.' },
+  { title: 'We take a proper look', text: 'The developer who would do the work reviews your site.' },
+  { title: 'You get a clear answer', text: 'What to fix, in what order, and what it would take.' },
+];
 
-  function update<K extends keyof typeof form>(key: K, value: (typeof form)[K]) {
-    setForm((prev) => ({ ...prev, [key]: value }));
-  }
+/* ------------------------------------------------------------------ */
+/* Form handler. Replace the TODO with your real delivery method.      */
+/* ------------------------------------------------------------------ */
+async function submitLead(formData: FormData) {
+  'use server';
+  const lead = {
+    name: String(formData.get('name') ?? '').trim(),
+    email: String(formData.get('email') ?? '').trim(),
+    website: String(formData.get('website') ?? '').trim(),
+    message: String(formData.get('message') ?? '').trim(),
+    plan: String(formData.get('plan') ?? 'audit'),
+  };
+  // Honeypot: real visitors never fill this hidden field.
+  if (String(formData.get('company') ?? '')) return;
+  // TODO: validate the fields, then send `lead` to your CMS, CRM or email service.
+  // TODO: redirect to a thank-you page after saving.
+  void lead;
+}
 
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    if (!form.name || !form.email) return;
-    setStatus('loading');
-    setError(null);
-    try {
-      const res = await fetch('/api/lead', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, confirm_human: confirmHuman, renderedAt }),
-      });
+/* ------------------------------------------------------------------ */
+/* Page                                                                */
+/* ------------------------------------------------------------------ */
+export default async function GetStarted({
+  searchParams,
+}: {
+  // Next.js 15 passes searchParams as a Promise. On Next 14, remove the Promise and await.
+  searchParams: Promise<{ plan?: string }>;
+}) {
+  const { plan: raw } = await searchParams;
+  const plan: PlanKey = isPlan(raw) ? raw : 'audit';
+  const copy = PLANS[plan];
 
-      if (!res.ok) {
-        const data = await res.json().catch(() => null);
-        throw new Error(data?.error ?? 'Something went wrong.');
-      }
-
-      setStatus('success');
-    } catch (err) {
-      setStatus('idle');
-      setError(err instanceof Error ? err.message : 'Something went wrong.');
-    }
-  }
-
-  if (status === 'success') {
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="mx-auto flex max-w-md flex-col items-center gap-3 rounded-3xl border border-green-500/30 bg-green-500/10 px-8 py-12 text-center"
-      >
-        <CheckCircle2 className="h-10 w-10 text-green-600 dark:text-green-400" />
-        <h2 className="font-display text-xl font-bold text-foreground">
-          You&apos;re in! Your SEO audit request is on its way.
-        </h2>
-        <p className="text-sm text-muted-foreground">
-          Keep an eye on your inbox — we typically reply within 1 business day
-          with next steps for your custom website and local SEO plan.
-        </p>
-      </motion.div>
-    );
-  }
+  const data = graph([
+    ...baseNodes(),
+    webPage({
+      path,
+      name: 'Get your free SEO analysis | ArboWeb',
+      description: String(metadata.description),
+      lang: 'en',
+      hasBreadcrumb: true,
+    }),
+    breadcrumbs(path, [
+      { name: 'Home', path: '/' },
+      { name: 'Get started', path },
+    ]),
+  ]);
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="mx-auto grid max-w-2xl gap-5 rounded-3xl border border-slate-200/60 bg-card p-6 shadow-xl shadow-black/[0.03] dark:border-white/10 sm:p-8"
-    >
-      {/* Honeypot — real visitors never see this. Positioned off-screen
-          rather than display:none, since some bots skip hidden inputs
-          but not ones that are merely off-canvas. Checkbox, not a text
-          field, so browser autofill can't silently check it for a real
-          visitor the way it could populate a text input. */}
-      <div
-        aria-hidden="true"
-        style={{ position: 'absolute', left: '-9999px', top: 0, height: 0, overflow: 'hidden' }}
-      >
-        <label htmlFor="confirm_human">Leave unchecked</label>
-        <input
-          id="confirm_human"
-          name="confirm_human"
-          type="checkbox"
-          tabIndex={-1}
-          autoComplete="off"
-          checked={confirmHuman}
-          onChange={(e) => setConfirmHuman(e.target.checked)}
-        />
-      </div>
+    <main className="mx-auto max-w-5xl px-4 py-16 sm:py-24">
+      <JsonLd data={data} />
 
-      <div className="grid gap-5 sm:grid-cols-2">
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="name" className="text-sm font-medium text-foreground">
-            Full name *
-          </label>
-          <input
-            id="name"
-            required
-            value={form.name}
-            onChange={(e) => update('name', e.target.value)}
-            placeholder="Jordan Ellis"
-            className="h-11 rounded-xl border border-input bg-background px-4 text-sm shadow-sm outline-none transition focus:border-orange-500/60 focus:ring-2 focus:ring-orange-500/30"
-          />
+      <div className="grid gap-12 lg:grid-cols-2">
+        {/* Left: promise and proof of process */}
+        <div>
+          <h1 className="font-display text-4xl font-extrabold tracking-tighter text-foreground sm:text-5xl">
+            {copy.heading}
+          </h1>
+          <p className="mt-5 text-base text-muted-foreground sm:text-lg">{copy.intro}</p>
+
+          <h2 className="mt-10 text-lg font-semibold text-foreground">What you get</h2>
+          <ul className="mt-3 space-y-2 text-muted-foreground">
+            {copy.gets.map((g) => (
+              <li key={g} className="flex gap-2">
+                <span aria-hidden="true">&#10003;</span>
+                <span>{g}</span>
+              </li>
+            ))}
+          </ul>
+
+          <h2 className="mt-10 text-lg font-semibold text-foreground">How it works</h2>
+          <ol className="mt-3 space-y-4">
+            {STEPS.map((s, i) => (
+              <li key={s.title} className="flex gap-3">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-warm text-sm font-semibold text-white">
+                  {i + 1}
+                </span>
+                <span>
+                  <span className="block font-medium text-foreground">{s.title}</span>
+                  <span className="text-muted-foreground">{s.text}</span>
+                </span>
+              </li>
+            ))}
+          </ol>
         </div>
 
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="email" className="text-sm font-medium text-foreground">
-            Email *
-          </label>
-          <input
-            id="email"
-            type="email"
-            required
-            value={form.email}
-            onChange={(e) => update('email', e.target.value)}
-            placeholder="you@yourbusiness.com"
-            className="h-11 rounded-xl border border-input bg-background px-4 text-sm shadow-sm outline-none transition focus:border-orange-500/60 focus:ring-2 focus:ring-orange-500/30"
-          />
-        </div>
+        {/* Right: the form */}
+        <form action={submitLead} className="space-y-4 rounded-2xl border border-input bg-background p-6 shadow-sm">
+          <input type="hidden" name="plan" value={plan} />
+          {/* Honeypot, hidden from people */}
+          <input type="text" name="company" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
 
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="phone" className="text-sm font-medium text-foreground">
-            Phone
-          </label>
-          <input
-            id="phone"
-            type="tel"
-            value={form.phone}
-            onChange={(e) => update('phone', e.target.value)}
-            placeholder="(555) 123-4567"
-            className="h-11 rounded-xl border border-input bg-background px-4 text-sm shadow-sm outline-none transition focus:border-orange-500/60 focus:ring-2 focus:ring-orange-500/30"
-          />
-        </div>
+          <Field label="Your name" name="name" type="text" autoComplete="name" required />
+          <Field label="Email" name="email" type="email" autoComplete="email" required placeholder="you@yourbusiness.com" />
+          <Field label="Your website" name="website" type="url" placeholder="https://" required={plan !== 'custom'} />
 
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="business" className="text-sm font-medium text-foreground">
-            Business name
+          <label className="block text-sm font-medium text-foreground">
+            What would you like more of? <span className="font-normal text-muted-foreground">(optional)</span>
+            <textarea
+              name="message"
+              rows={4}
+              className="mt-1 w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-orange-500/60 focus:ring-2 focus:ring-orange-500/30"
+            />
           </label>
-          <input
-            id="business"
-            value={form.business}
-            onChange={(e) => update('business', e.target.value)}
-            placeholder="Ellis Home Services"
-            className="h-11 rounded-xl border border-input bg-background px-4 text-sm shadow-sm outline-none transition focus:border-orange-500/60 focus:ring-2 focus:ring-orange-500/30"
-          />
-        </div>
 
-        <div className="flex flex-col gap-1.5 sm:col-span-2">
-          <label htmlFor="website" className="text-sm font-medium text-foreground">
-            Current website (if you have one)
-          </label>
-          <input
-            id="website"
-            value={form.website}
-            onChange={(e) => update('website', e.target.value)}
-            placeholder="https://yourbusiness.com"
-            className="h-11 rounded-xl border border-input bg-background px-4 text-sm shadow-sm outline-none transition focus:border-orange-500/60 focus:ring-2 focus:ring-orange-500/30"
-          />
-        </div>
-
-        <div className="flex flex-col gap-1.5 sm:col-span-2">
-          <label htmlFor="plan" className="text-sm font-medium text-foreground">
-            What are you interested in?
-          </label>
-          <select
-            id="plan"
-            value={form.plan}
-            onChange={(e) => update('plan', e.target.value as PlanId)}
-            className="h-11 rounded-xl border border-input bg-background px-4 text-sm shadow-sm outline-none transition focus:border-orange-500/60 focus:ring-2 focus:ring-orange-500/30"
+          <button
+            type="submit"
+            className="group inline-flex h-12 w-full items-center justify-center gap-1.5 rounded-xl bg-gradient-warm px-5 text-sm font-semibold text-white shadow-lg shadow-orange-500/25 transition hover:shadow-orange-500/40 hover:brightness-105"
           >
-            <option value="">Not sure yet</option>
-            <option value="audit">{planLabels.audit}</option>
-            <option value="rank">{planLabels.rank}</option>
-            <option value="custom">{planLabels.custom}</option>
-          </select>
-        </div>
-
-        <div className="flex flex-col gap-1.5 sm:col-span-2">
-          <label htmlFor="message" className="text-sm font-medium text-foreground">
-            Anything else we should know?
-          </label>
-          <textarea
-            id="message"
-            rows={4}
-            value={form.message}
-            onChange={(e) => update('message', e.target.value)}
-            placeholder="Tell us about your business, your current website (if any), and what you're hoping to achieve — more local customers, higher search rankings, a full site redesign, etc."
-            className="rounded-xl border border-input bg-background px-4 py-3 text-sm shadow-sm outline-none transition focus:border-orange-500/60 focus:ring-2 focus:ring-orange-500/30"
-          />
-        </div>
-      </div>
-
-      <button
-        type="submit"
-        disabled={status === 'loading'}
-        className="group inline-flex h-12 items-center justify-center gap-1.5 rounded-xl bg-gradient-warm text-sm font-semibold text-white shadow-lg shadow-orange-500/25 transition hover:brightness-105 disabled:opacity-70"
-      >
-        {status === 'loading' ? (
-          <>
-            <Loader2 className="h-4 w-4 animate-spin" />
-            Sending...
-          </>
-        ) : (
-          <>
-            Get My Free SEO Audit
+            {copy.cta}
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-          </>
-        )}
-      </button>
+          </button>
 
-      {error && (
-        <p role="alert" className="text-center text-sm text-red-600 dark:text-red-400">
-          {error}
-        </p>
-      )}
-
-      <p className="text-center text-xs text-muted-foreground">
-        No spam, ever. We&apos;ll only use this to reach out about your website
-        and local SEO growth plan.
-      </p>
-    </form>
+          {/* GDPR: say what you do with the data and link your privacy policy */}
+          <p className="text-xs text-muted-foreground">
+            We use your details only to reply to this request. Read our{' '}
+            <Link href="/privacy" className="underline">privacy policy</Link>.
+          </p>
+        </form>
+      </div>
+    </main>
   );
 }
 
-export default function GetStartedPage() {
+function Field(props: {
+  label: string; name: string; type: string;
+  required?: boolean; placeholder?: string; autoComplete?: string;
+}) {
+  const { label, ...input } = props;
   return (
-    <>
-      <Navbar />
-      <main className="pt-16">
-        <section className="relative overflow-hidden py-20 sm:py-28">
-          <div className="absolute inset-0 bg-mesh-warm" />
-          <div className="absolute inset-0 bg-grid mask-fade-b opacity-40" />
-
-          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <Reveal className="mx-auto max-w-2xl text-center">
-              <GlowBadge className="mx-auto">
-                <Sparkles className="h-3.5 w-3.5" />
-                Custom websites & local SEO for small businesses
-              </GlowBadge>
-              <h1 className="mt-6 font-display text-4xl font-extrabold tracking-tighter text-foreground sm:text-5xl">
-                Get a custom small business website —
-                <br className="hidden sm:block" />{' '}
-                <GradientText>built to rank, not just launch.</GradientText>
-              </h1>
-              <p className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground">
-                Whether you want a free SEO audit, help ranking higher in
-                local search, or a fully custom-built, SEO-optimized website,
-                this is the fastest way to reach us. We reply within 1
-                business day.
-              </p>
-            </Reveal>
-
-            <Reveal className="mt-12" delay={0.1}>
-              <Suspense fallback={null}>
-                <GetStartedForm />
-              </Suspense>
-            </Reveal>
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </>
+    <label className="block text-sm font-medium text-foreground">
+      {label}
+      <input
+        {...input}
+        className="mt-1 h-12 w-full rounded-xl border border-input bg-background px-4 text-sm outline-none focus:border-orange-500/60 focus:ring-2 focus:ring-orange-500/30"
+      />
+    </label>
   );
 }
