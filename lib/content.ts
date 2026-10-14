@@ -209,9 +209,8 @@ export const footerSections: { title: string; links: NavItem[] }[] = [
     title: 'Company',
     links: [
       { label: 'About', href: '/#manifesto' },
-      { label: 'Careers', href: '/#manifesto' },
-      { label: 'Contact', href: '/#newsletter' },
-      { label: 'Privacy', href: '/#newsletter' },
+      { label: 'Contact', href: '/contact' },
+      { label: 'Privacy', href: '/privacy' },
     ],
   },
 ];

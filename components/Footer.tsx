@@ -64,11 +64,8 @@ export function Footer() {
             © {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
           </p>
           <div className="flex items-center gap-5 text-sm text-muted-foreground">
-            <Link href="/#newsletter" className="hover:text-foreground">
+            <Link href="/privacy" className="hover:text-foreground">
               Privacy
-            </Link>
-            <Link href="/#newsletter" className="hover:text-foreground">
-              Terms
             </Link>
             <Link href="/blog" className="hover:text-foreground">
               Blog

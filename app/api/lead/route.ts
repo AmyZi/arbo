@@ -1,4 +1,8 @@
 import { NextResponse } from 'next/server';
+import nodemailer from 'nodemailer';
+
+// nodemailer needs the Node.js runtime (it does not run on the Edge runtime).
+export const runtime = 'nodejs';
 
 // Very small in-memory rate limiter. Resets on cold start, so it's not
 // bulletproof — but it stops a bot hammering the endpoint in a burst,
@@ -19,6 +23,20 @@ function isRateLimited(ip: string): boolean {
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// Max length for every field (stops oversized payloads).
+const MAX_LEN = {
+  name: 100,
+  email: 200,
+  phone: 50,
+  business: 150,
+  website: 300,
+  plan: 20,
+  message: 3000,
+} as const;
+
+// Strip line breaks from anything used in headers (subject, reply-to name).
+const oneLine = (s: string) => s.replace(/[\r\n]+/g, ' ').trim();
 
 export async function POST(request: Request) {
   try {
@@ -50,8 +68,11 @@ export async function POST(request: Request) {
       // Checkboxes don't have that problem.
       confirm_human,
       // Timestamp (ms) of when the form was rendered, sent by the client.
-      // Bots that script-submit instantly almost always beat this.
       renderedAt,
+      // Optional: milliseconds the visitor spent on the form, measured on
+      // the client. Immune to clock differences between the visitor's
+      // device and the server.
+      elapsedMs,
     } = body ?? {};
 
     // --- Bot checks (silently reject, don't tell the bot why) ---
@@ -60,15 +81,35 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: true }); // fake success, no email sent
     }
 
-    if (typeof renderedAt === 'number') {
-      const elapsed = Date.now() - renderedAt;
-      if (elapsed < 1500) {
-        console.warn('Blocked lead: submitted too fast', { ip, elapsed });
-        return NextResponse.json({ success: true });
-      }
+    // Prefer the client-measured duration; fall back to renderedAt.
+    const elapsed =
+      typeof elapsedMs === 'number'
+        ? elapsedMs
+        : typeof renderedAt === 'number'
+          ? Date.now() - renderedAt
+          : null;
+
+    if (elapsed !== null && elapsed < 1500) {
+      console.warn('Blocked lead: submitted too fast', { ip, elapsed });
+      return NextResponse.json({ success: true });
     }
 
     // --- Real validation (these DO tell the user what's wrong) ---
+    // Every field must be a string (or missing) and within its limit.
+    const fields = { name, email, phone, business, website, plan, message };
+    for (const [key, value] of Object.entries(fields)) {
+      if (value === undefined || value === null || value === '') continue;
+      if (typeof value !== 'string') {
+        return NextResponse.json({ error: 'Invalid input.' }, { status: 400 });
+      }
+      if (value.length > MAX_LEN[key as keyof typeof MAX_LEN]) {
+        return NextResponse.json(
+          { error: `${key[0].toUpperCase()}${key.slice(1)} is too long.` },
+          { status: 400 }
+        );
+      }
+    }
+
     if (!name || !email) {
       return NextResponse.json(
         { error: 'Name and email are required.' },
@@ -83,15 +124,13 @@ export async function POST(request: Request) {
       );
     }
 
-    if (typeof name === 'string' && name.length > 100) {
-      return NextResponse.json({ error: 'Name is too long.' }, { status: 400 });
-    }
+    // --- Gmail SMTP config ---
+    const gmailUser = process.env.GMAIL_USER;
+    const gmailPass = process.env.GMAIL_APP_PASSWORD;
+    const to = process.env.LEAD_NOTIFICATION_EMAIL || gmailUser;
 
-    const to = process.env.LEAD_NOTIFICATION_EMAIL;
-    const apiKey = process.env.RESEND_API_KEY;
-
-    if (!to || !apiKey) {
-      console.error('RESEND_API_KEY or LEAD_NOTIFICATION_EMAIL is not set.');
+    if (!gmailUser || !gmailPass || !to) {
+      console.error('GMAIL_USER or GMAIL_APP_PASSWORD is not set.');
       return NextResponse.json(
         { error: 'Server is not configured to receive leads yet.' },
         { status: 500 }
@@ -104,21 +143,34 @@ export async function POST(request: Request) {
       custom: 'Custom Build & Scale',
     };
 
-    const res = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        // Swap this once you've verified a domain in Resend.
-        // Until then you can only send from onboarding@resend.dev.
-        from: 'Arbo Leads <onboarding@resend.dev>',
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
+      auth: { user: gmailUser, pass: gmailPass },
+    });
+
+    try {
+      await transporter.sendMail({
+        // Gmail always sends from the authenticated account, whatever is set here.
+        from: `"ArboWeb Leads" <${gmailUser}>`,
         to,
-        reply_to: email,
-        subject: `New lead: ${name}${business ? ` (${business})` : ''}`,
+        // Hitting Reply in Gmail answers the lead directly.
+        replyTo: { name: oneLine(name), address: email },
+        subject: oneLine(`New lead: ${name}${business ? ` (${business})` : ''}`),
+        text: [
+          `Name: ${name}`,
+          `Email: ${email}`,
+          phone ? `Phone: ${phone}` : '',
+          business ? `Business: ${business}` : '',
+          website ? `Website: ${website}` : '',
+          plan ? `Interested in: ${planLabels[plan] ?? plan}` : '',
+          message ? `\nMessage:\n${message}` : '',
+        ]
+          .filter(Boolean)
+          .join('\n'),
         html: `
-          <h2>New lead from Arbo.com</h2>
+          <h2>New lead from ArboWeb</h2>
           <p><strong>Name:</strong> ${escapeHtml(name)}</p>
           <p><strong>Email:</strong> ${escapeHtml(email)}</p>
           ${phone ? `<p><strong>Phone:</strong> ${escapeHtml(phone)}</p>` : ''}
@@ -127,12 +179,9 @@ export async function POST(request: Request) {
           ${plan ? `<p><strong>Interested in:</strong> ${escapeHtml(planLabels[plan] ?? plan)}</p>` : ''}
           ${message ? `<p><strong>Message:</strong><br />${escapeHtml(message).replace(/\n/g, '<br />')}</p>` : ''}
         `,
-      }),
-    });
-
-    if (!res.ok) {
-      const data = await res.json().catch(() => null);
-      console.error('Resend API error:', res.status, data);
+      });
+    } catch (err) {
+      console.error('Gmail SMTP error:', err);
       return NextResponse.json(
         { error: 'Failed to send. Please try again.' },
         { status: 502 }

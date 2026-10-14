@@ -1,0 +1,251 @@
+'use client';
+
+import { useState, type FormEvent } from 'react';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { motion } from 'framer-motion';
+import { ArrowRight, CheckCircle2, Loader2 } from 'lucide-react';
+
+type PlanId = 'audit' | 'rank' | 'custom' | '';
+
+const planLabels: Record<Exclude<PlanId, ''>, string> = {
+  audit: 'Free SEO Audit & Strategy Call',
+  rank: 'Local SEO Ranking & Tracking',
+  custom: 'Custom Website Design & Growth Build',
+};
+
+export function GetStartedForm() {
+  const searchParams = useSearchParams();
+  const planParam = (searchParams.get('plan') ?? '') as PlanId;
+
+  // Captured once, on first render — used server-side to reject
+  // submissions that arrive suspiciously fast (bots don't "read" the form).
+  const [renderedAt] = useState(() => Date.now());
+  // Honeypot — a checkbox real visitors never see, so it can never get
+  // checked by a human. (A text-field honeypot can get silently
+  // autofilled by the browser and false-positive on real submissions —
+  // checkboxes don't have that problem.)
+  const [confirmHuman, setConfirmHuman] = useState(false);
+
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
+  const [error, setError] = useState<string | null>(null);
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    business: '',
+    website: '',
+    plan: planParam in planLabels ? planParam : ('' as PlanId),
+    message: '',
+  });
+
+  function update<K extends keyof typeof form>(key: K, value: (typeof form)[K]) {
+    setForm((prev) => ({ ...prev, [key]: value }));
+  }
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    if (!form.name || !form.email) return;
+    setStatus('loading');
+    setError(null);
+    try {
+      const res = await fetch('/api/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...form, confirm_human: confirmHuman, renderedAt }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.error ?? 'Something went wrong.');
+      }
+
+      setStatus('success');
+    } catch (err) {
+      setStatus('idle');
+      setError(err instanceof Error ? err.message : 'Something went wrong.');
+    }
+  }
+
+  if (status === 'success') {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mx-auto flex max-w-md flex-col items-center gap-3 rounded-3xl border border-green-500/30 bg-green-500/10 px-8 py-12 text-center"
+      >
+        <CheckCircle2 className="h-10 w-10 text-green-600 dark:text-green-400" />
+        <h2 className="font-display text-xl font-bold text-foreground">
+          You&apos;re in! Your SEO audit request is on its way.
+        </h2>
+        <p className="text-sm text-muted-foreground">
+          Keep an eye on your inbox — we typically reply within 1 business day
+          with next steps for your custom website and local SEO plan.
+        </p>
+      </motion.div>
+    );
+  }
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="mx-auto grid max-w-2xl gap-5 rounded-3xl border border-slate-200/60 bg-card p-6 shadow-xl shadow-black/[0.03] dark:border-white/10 sm:p-8"
+    >
+      {/* Honeypot — real visitors never see this. Positioned off-screen
+          rather than display:none, since some bots skip hidden inputs
+          but not ones that are merely off-canvas. Checkbox, not a text
+          field, so browser autofill can't silently check it for a real
+          visitor the way it could populate a text input. */}
+      <div
+        aria-hidden="true"
+        style={{ position: 'absolute', left: '-9999px', top: 0, height: 0, overflow: 'hidden' }}
+      >
+        <label htmlFor="confirm_human">Leave unchecked</label>
+        <input
+          id="confirm_human"
+          name="confirm_human"
+          type="checkbox"
+          tabIndex={-1}
+          autoComplete="off"
+          checked={confirmHuman}
+          onChange={(e) => setConfirmHuman(e.target.checked)}
+        />
+      </div>
+
+      <div className="grid gap-5 sm:grid-cols-2">
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="name" className="text-sm font-medium text-foreground">
+            Full name *
+          </label>
+          <input
+            id="name"
+            required
+            value={form.name}
+            onChange={(e) => update('name', e.target.value)}
+            placeholder="Jordan Ellis"
+            className="h-11 rounded-xl border border-input bg-background px-4 text-sm shadow-sm outline-none transition focus:border-orange-500/60 focus:ring-2 focus:ring-orange-500/30"
+          />
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="email" className="text-sm font-medium text-foreground">
+            Email *
+          </label>
+          <input
+            id="email"
+            type="email"
+            required
+            value={form.email}
+            onChange={(e) => update('email', e.target.value)}
+            placeholder="you@yourbusiness.com"
+            className="h-11 rounded-xl border border-input bg-background px-4 text-sm shadow-sm outline-none transition focus:border-orange-500/60 focus:ring-2 focus:ring-orange-500/30"
+          />
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="phone" className="text-sm font-medium text-foreground">
+            Phone
+          </label>
+          <input
+            id="phone"
+            type="tel"
+            value={form.phone}
+            onChange={(e) => update('phone', e.target.value)}
+            placeholder="(555) 123-4567"
+            className="h-11 rounded-xl border border-input bg-background px-4 text-sm shadow-sm outline-none transition focus:border-orange-500/60 focus:ring-2 focus:ring-orange-500/30"
+          />
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="business" className="text-sm font-medium text-foreground">
+            Business name
+          </label>
+          <input
+            id="business"
+            value={form.business}
+            onChange={(e) => update('business', e.target.value)}
+            placeholder="Ellis Home Services"
+            className="h-11 rounded-xl border border-input bg-background px-4 text-sm shadow-sm outline-none transition focus:border-orange-500/60 focus:ring-2 focus:ring-orange-500/30"
+          />
+        </div>
+
+        <div className="flex flex-col gap-1.5 sm:col-span-2">
+          <label htmlFor="website" className="text-sm font-medium text-foreground">
+            Current website (if you have one)
+          </label>
+          <input
+            id="website"
+            value={form.website}
+            onChange={(e) => update('website', e.target.value)}
+            placeholder="https://yourbusiness.com"
+            className="h-11 rounded-xl border border-input bg-background px-4 text-sm shadow-sm outline-none transition focus:border-orange-500/60 focus:ring-2 focus:ring-orange-500/30"
+          />
+        </div>
+
+        <div className="flex flex-col gap-1.5 sm:col-span-2">
+          <label htmlFor="plan" className="text-sm font-medium text-foreground">
+            What are you interested in?
+          </label>
+          <select
+            id="plan"
+            value={form.plan}
+            onChange={(e) => update('plan', e.target.value as PlanId)}
+            className="h-11 rounded-xl border border-input bg-background px-4 text-sm shadow-sm outline-none transition focus:border-orange-500/60 focus:ring-2 focus:ring-orange-500/30"
+          >
+            <option value="">Not sure yet</option>
+            <option value="audit">{planLabels.audit}</option>
+            <option value="rank">{planLabels.rank}</option>
+            <option value="custom">{planLabels.custom}</option>
+          </select>
+        </div>
+
+        <div className="flex flex-col gap-1.5 sm:col-span-2">
+          <label htmlFor="message" className="text-sm font-medium text-foreground">
+            Anything else we should know?
+          </label>
+          <textarea
+            id="message"
+            rows={4}
+            value={form.message}
+            onChange={(e) => update('message', e.target.value)}
+            placeholder="Tell us about your business, your current website (if any), and what you're hoping to achieve — more local customers, higher search rankings, a full site redesign, etc."
+            className="rounded-xl border border-input bg-background px-4 py-3 text-sm shadow-sm outline-none transition focus:border-orange-500/60 focus:ring-2 focus:ring-orange-500/30"
+          />
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        disabled={status === 'loading'}
+        className="group inline-flex h-12 items-center justify-center gap-1.5 rounded-xl bg-gradient-warm text-sm font-semibold text-white shadow-lg shadow-orange-500/25 transition hover:brightness-105 disabled:opacity-70"
+      >
+        {status === 'loading' ? (
+          <>
+            <Loader2 className="h-4 w-4 animate-spin" />
+            Sending...
+          </>
+        ) : (
+          <>
+            Get My Free SEO Audit
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+          </>
+        )}
+      </button>
+
+      {error && (
+        <p role="alert" className="text-center text-sm text-red-600 dark:text-red-400">
+          {error}
+        </p>
+      )}
+
+      <p className="text-center text-xs text-muted-foreground">
+        No spam, ever. We use your details only to reply to your request.
+        See our{' '}
+        <Link href="/privacy" className="underline">
+          privacy policy
+        </Link>
+        .
+      </p>
+    </form>
+  );
+}

@@ -27,7 +27,6 @@ export default function Home() {
   return (
     <>
       <JsonLd data={data} />
-      <Navbar />
       <main>
         <Hero />
         <LogoCloud />
@@ -39,7 +38,6 @@ export default function Home() {
         <FAQ />
         <Newsletter />
       </main>
-      <Footer />
     </>
   );
 }
