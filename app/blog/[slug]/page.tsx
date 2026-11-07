@@ -1,9 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-<<<<<<< HEAD
-=======
 import Image from 'next/image';
->>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
 import Link from 'next/link';
 import { ArrowLeft, Calendar, Clock, ArrowRight } from 'lucide-react';
 import {
@@ -30,22 +27,14 @@ export function generateMetadata({ params }: Props): Metadata {
   const url = `${siteConfig.url}/blog/${post.slug}`;
   return {
     title: post.title,
-<<<<<<< HEAD
-    description: post.description,
-=======
     // Falls back to description if metaDescription wasn't set in the CMS.
     description: post.metaDescription || post.description,
->>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
     authors: [{ name: post.author }],
     alternates: { canonical: url },
     openGraph: {
       type: 'article',
       title: post.title,
-<<<<<<< HEAD
-      description: post.description,
-=======
       description: post.metaDescription || post.description,
->>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
       url,
       publishedTime: post.date,
       authors: [post.author],
@@ -55,11 +44,7 @@ export function generateMetadata({ params }: Props): Metadata {
     twitter: {
       card: 'summary_large_image',
       title: post.title,
-<<<<<<< HEAD
-      description: post.description,
-=======
       description: post.metaDescription || post.description,
->>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
       images: post.cover ? [post.cover] : [],
     },
   };
@@ -98,8 +83,6 @@ export default function PostPage({ params }: Props) {
     keywords: post.tags.join(', '),
   };
 
-<<<<<<< HEAD
-=======
   // Only built when the CMS "FAQs" list is non-empty. Deliberately kept
   // as a separate script tag rather than merged into jsonLd above —
   // Google reads multiple ld+json blocks on one page fine, and keeping
@@ -121,22 +104,18 @@ export default function PostPage({ params }: Props) {
         }
       : null;
 
->>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-<<<<<<< HEAD
-=======
       {faqJsonLd && (
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
       )}
->>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
       <Navbar />
       <main className="pt-16">
         <article className="relative">
@@ -195,14 +174,6 @@ export default function PostPage({ params }: Props) {
 
           {/* cover */}
           {post.cover && (
-<<<<<<< HEAD
-            <div className="mx-auto max-w-4xl px-4 sm:px-6">
-              <div className="-mt-8 aspect-[16/9] overflow-hidden rounded-2xl border border-border/60 bg-muted shadow-xl">
-                <img
-                  src={post.cover}
-                  alt={post.title}
-                  className="h-full w-full object-cover"
-=======
             <div className="relative mx-auto max-w-4xl px-4 sm:px-6">
               <div className="-mt-8 aspect-[16/9] overflow-hidden rounded-2xl border border-border/60 bg-muted shadow-xl">
                 <Image
@@ -212,7 +183,6 @@ export default function PostPage({ params }: Props) {
                   sizes="(min-width: 768px) 896px, 100vw"
                   className="object-cover"
                   priority
->>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
                 />
               </div>
             </div>
@@ -257,19 +227,12 @@ function RelatedCard({ post }: { post: PostMeta }) {
       className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200/60 bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg dark:border-white/10"
     >
       <div className="relative aspect-[16/9] overflow-hidden bg-muted">
-<<<<<<< HEAD
-        <img
-          src={post.cover}
-          alt=""
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-=======
         <Image
           src={post.cover}
           alt={`${post.title} related small business growth article`}
           fill
           sizes="(min-width: 768px) 33vw, 100vw"
           className="object-cover transition-transform duration-500 group-hover:scale-105"
->>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
         />
       </div>
       <div className="flex flex-1 flex-col p-5">
@@ -283,8 +246,4 @@ function RelatedCard({ post }: { post: PostMeta }) {
       </div>
     </Link>
   );
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804

@@ -203,8 +203,6 @@
     @apply my-8 border-border/60;
   }
 }
-<<<<<<< HEAD
-=======
 .prose-content table {
   width: 100%;
   table-layout: fixed;
@@ -234,4 +232,3 @@
     font-size: 0.8125rem;
   }
 }
->>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804

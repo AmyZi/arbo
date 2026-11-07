@@ -1,8 +1,5 @@
 import type { Metadata } from 'next';
-<<<<<<< HEAD
-=======
 import Image from 'next/image';
->>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
 import Link from 'next/link';
 import { ArrowRight, Clock, Calendar } from 'lucide-react';
 import { getAllPosts, formatDate, type PostMeta } from '@/lib/posts';
@@ -12,17 +9,6 @@ import { Newsletter } from '@/components/sections/Newsletter';
 import { GradientText } from '@/components/motion/Reveal';
 
 export const metadata: Metadata = {
-<<<<<<< HEAD
-  title: 'Blog — GenAI production engineering insights',
-  description:
-    'Field notes on shipping generative AI: evaluation patterns, guardrail recipes, cost optimization, and postmortems from real production deployments.',
-  alternates: { canonical: 'https://genai-101.example.com/blog' },
-  openGraph: {
-    title: 'Blog — GenAI production engineering insights',
-    description:
-      'Field notes on shipping generative AI: evaluation patterns, guardrail recipes, cost optimization, and postmortems.',
-    url: 'https://genai-101.example.com/blog',
-=======
   title: 'Blog — Small business growth insights',
   description:
     'Field notes on getting more small business customers: lead generation tactics, funnel fixes, and case studies from real small business growth campaigns.',
@@ -32,7 +18,6 @@ export const metadata: Metadata = {
     description:
       'Field notes on getting more small business customers: lead generation tactics, funnel fixes, and case studies from real campaigns.',
     url: 'https://www.arboweb.com/blog',
->>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
   },
 };
 
@@ -49,16 +34,6 @@ export default function BlogPage() {
           <div className="absolute inset-0 bg-grid mask-fade-b opacity-40" />
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <span className="text-sm font-semibold uppercase tracking-widest text-orange-600 dark:text-orange-400">
-<<<<<<< HEAD
-              The GenAI 101 Blog
-            </span>
-            <h1 className="mt-3 max-w-3xl font-display text-4xl font-extrabold tracking-tighter text-foreground sm:text-5xl">
-              Field notes on shipping <GradientText>generative AI</GradientText>
-            </h1>
-            <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-              Evaluation patterns, guardrail recipes, cost optimization, and
-              postmortems from teams running GenAI in production.
-=======
               The Arbo Blog
             </span>
             <h1 className="mt-3 max-w-3xl font-display text-4xl font-extrabold tracking-tighter text-foreground sm:text-5xl">
@@ -67,7 +42,6 @@ export default function BlogPage() {
             <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
               Lead generation tactics, funnel fixes, and case studies from
               small business owners who scaled past the plateau.
->>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
             </p>
           </div>
         </section>
@@ -105,12 +79,6 @@ function FeaturedPost({ post }: { post: PostMeta }) {
           className="group grid overflow-hidden rounded-3xl border border-slate-200/60 bg-card shadow-sm transition-all hover:shadow-xl hover:shadow-orange-500/5 dark:border-white/10 lg:grid-cols-2"
         >
           <div className="relative aspect-[16/10] overflow-hidden bg-muted lg:aspect-auto">
-<<<<<<< HEAD
-            <img
-              src={post.cover}
-              alt=""
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-=======
             <Image
               src={post.cover}
               alt={`${post.title} small business SEO and web development article`}
@@ -118,7 +86,6 @@ function FeaturedPost({ post }: { post: PostMeta }) {
               sizes="(min-width: 1024px) 50vw, 100vw"
               className="object-cover transition-transform duration-500 group-hover:scale-105"
               priority
->>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
           </div>
@@ -165,19 +132,12 @@ function PostCard({ post }: { post: PostMeta }) {
       className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200/60 bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-orange-500/5 dark:border-white/10"
     >
       <div className="relative aspect-[16/9] overflow-hidden bg-muted">
-<<<<<<< HEAD
-        <img
-          src={post.cover}
-          alt=""
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-=======
         <Image
           src={post.cover}
           alt={`${post.title} small business customer acquisition article`}
           fill
           sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
           className="object-cover transition-transform duration-500 group-hover:scale-105"
->>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
         />
       </div>
       <div className="flex flex-1 flex-col p-6">

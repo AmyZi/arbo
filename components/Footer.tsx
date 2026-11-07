@@ -1,9 +1,5 @@
 import Link from 'next/link';
-<<<<<<< HEAD
-import { Sparkles, Github, Twitter, Linkedin } from 'lucide-react';
-=======
 import { Sparkles, Instagram, Linkedin } from 'lucide-react';
->>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
 import { footerSections, siteConfig } from '@/lib/content';
 
 export function Footer() {
@@ -17,11 +13,7 @@ export function Footer() {
                 <Sparkles className="h-5 w-5" />
               </span>
               <span className="font-display text-lg font-bold tracking-tight">
-<<<<<<< HEAD
-                GenAI<span className="text-gradient-warm">101</span>
-=======
                 AR<span className="text-gradient-warm">BO</span>
->>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
               </span>
             </Link>
             <p className="mt-4 max-w-xs text-sm text-muted-foreground">
@@ -29,15 +21,6 @@ export function Footer() {
             </p>
             <div className="mt-5 flex items-center gap-3">
               {[
-<<<<<<< HEAD
-                { Icon: Twitter, label: 'Twitter' },
-                { Icon: Github, label: 'GitHub' },
-                { Icon: Linkedin, label: 'LinkedIn' },
-              ].map(({ Icon, label }) => (
-                <a
-                  key={label}
-                  href="#"
-=======
                 { Icon: Linkedin, label: 'LinkedIn', href: 'https://linkedin.com/company/arboweb' },
                 { Icon: Instagram, label: 'Instagram', href: 'https://instagram.com/arboweb' },
               ].map(({ Icon, label, href }) => (
@@ -46,7 +29,6 @@ export function Footer() {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
->>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
                   aria-label={label}
                   className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground transition-colors hover:border-orange-500/40 hover:text-orange-500"
                 >
@@ -82,18 +64,9 @@ export function Footer() {
             © {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
           </p>
           <div className="flex items-center gap-5 text-sm text-muted-foreground">
-<<<<<<< HEAD
-            <Link href="/#newsletter" className="hover:text-foreground">
-              Privacy
-            </Link>
-            <Link href="/#newsletter" className="hover:text-foreground">
-              Terms
-            </Link>
-=======
             <Link href="/privacy" className="hover:text-foreground">
               Privacy
             </Link>
->>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
             <Link href="/blog" className="hover:text-foreground">
               Blog
             </Link>
