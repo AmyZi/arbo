@@ -1,0 +1,55 @@
+---
+title: "The Hidden Cost of Model Lock-In"
+description: "Why hard-coding to a single provider costs more than you think — and how to stay portable without over-engineering."
+date: "2025-09-15"
+author: "Maya Okafor"
+authorRole: "Staff ML Engineer"
+tags: ["architecture", "models", "cost"]
+cover: "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1200"
+---
+
+Every team I have consulted with that hard-coded to a single model provider
+has regretted it. Not because the provider was bad — usually it was great —
+but because the cost of switching grew linearly with every feature they
+shipped. Six months in, a deprecation notice or a price change becomes a
+multi-quarter migration.
+
+## Lock-in is rarely a deliberate choice
+
+Nobody sets out to be locked in. It happens one convenient SDK call at a
+time. You use the provider's function-calling format, its streaming helper,
+its image endpoint. Each is marginally faster than building an abstraction.
+The sum total is a codebase that cannot run on any other backend.
+
+## The minimal viable abstraction
+
+You do not need a grand multi-provider framework. You need one interface
+with two implementations:
+
+- `complete(messages, config) -> stream of chunks`
+- `embed(text) -> vector`
+
+That is it. Behind those two methods you can route to any provider. The
+config object carries model name, temperature, max tokens — the
+provider-specific bits live inside the implementation, not your app code.
+
+## Keep a shadow provider warm
+
+Once you have the abstraction, run a small percentage of traffic through a
+second provider in shadow mode. You get free comparative eval data and
+prove the portability is real, not theoretical. When you need to switch,
+you already have production traces on the fallback.
+
+## Deprecation is a when, not an if
+
+In the last 18 months I have watched three major providers change their
+model lineup, their pricing, or their terms. The teams that survived
+unchanged were the ones who never assumed the current model would exist
+forever. Treat your model choice as a config value, not an architectural
+decision.
+
+---
+
+Portability is not about hedging against disaster. It is about keeping the
+option to optimize — for cost, for latency, for capability — as the
+landscape shifts. The abstraction is cheap. The optionality is worth a lot.

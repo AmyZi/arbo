@@ -1,0 +1,57 @@
+---
+title: "From Prompt to Production: A GenAI Deployment Checklist"
+description: "The 12 things every team should verify before shipping a generative AI feature to real users."
+date: "2025-11-04"
+author: "Maya Okafor"
+authorRole: "Staff ML Engineer"
+tags: ["production", "deployment", "evaluation"]
+cover: "https://images.pexels.com/photos/8860949/pexels-photo-8860949.jpeg?auto=compress&cs=tinysrgb&w=1200"
+---
+
+Shipping a GenAI feature is not like shipping a regular feature. The output is
+non-deterministic, the failure modes are subtle, and the cost model is unlike
+anything you have dealt with before. Here is the checklist we use at
+Northwind before any model call reaches production traffic.
+
+## 1. Define success numerically
+
+Before writing a prompt, decide what "good" means in a number. Exact match,
+LLM-as-judge score, embedding similarity, or a custom rubric — pick one and
+record a baseline. If you cannot score it, you cannot ship it.
+
+## 2. Build an eval set early
+
+Gather 200–1,000 representative inputs. Real user traces are best;
+synthetic data works for a v1. This set becomes your regression suite for
+every future prompt and model change.
+
+## 3. Wrap every call in guardrails
+
+PII redaction, jailbreak detection, and topic fencing should run inline —
+not as a post-deploy patch. A single missed jailbreak can sink an entire
+launch.
+
+## 4. Instrument cost per request
+
+Token usage varies wildly across inputs. Without per-request accounting you
+will not know which feature is burning your budget until the invoice
+arrives.
+
+## 5. Plan for model swap
+
+Models get deprecated. Providers change terms. If your orchestration code is
+hard-wired to one provider, a deprecation notice becomes a fire drill.
+Abstract the interface from day one.
+
+## 6. Ship with a kill switch
+
+Every GenAI feature needs a fast, no-deploy way to fall back to a
+deterministic path. Traffic spikes, eval regressions, or a provider outage
+should not require a code push to mitigate.
+
+---
+
+The teams that ship GenAI reliably are not the ones with the cleverest
+prompts. They are the ones who treat the infrastructure around the model
+with the same rigor as any other production system. Run the checklist,
+automate what you can, and ship with confidence.
