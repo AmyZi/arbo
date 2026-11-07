@@ -7,6 +7,7 @@ import  {JsonLd}  from '@/components/JsonLd';
 import { siteConfig } from '@/lib/content';
 import { Footer } from '@/components/Footer';
 import { Navbar } from '@/components/Navbar';
+import SiteChrome from "@/components/SiteChrome";
 
 const inter = Inter({ 
   subsets: ['latin'], 
@@ -171,16 +172,18 @@ const structuredData = [
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <>
-      <html lang="en" className={`${inter.variable} ${sora.variable}`} suppressHydrationWarning>
-        <Navbar />
-        <body className="font-sans bg-background text-foreground">
-          <JsonLd data={structuredData} />
-          {children}
-          <Toaster />
-        <Footer />
-        </body>
-      </html>
-    </>
+    <html lang="en" className={`${inter.variable} ${sora.variable}`} suppressHydrationWarning>
+      <body className="font-sans bg-background text-foreground">
+        <JsonLd data={structuredData} />
+        <SiteChrome>
+          <Navbar />
+        </SiteChrome>
+        <main>{children}</main>
+        <Toaster />
+        <SiteChrome>
+          <Footer />
+        </SiteChrome>
+      </body>
+    </html>
   );
 }
