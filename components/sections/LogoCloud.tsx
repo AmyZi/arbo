@@ -4,14 +4,14 @@ import { motion } from 'framer-motion';
 import { Reveal } from '@/components/motion/Reveal';
 
 const logos = [
-  'Northwind',
-  'Loop',
-  'Fjord',
-  'Apex',
-  'Vanta',
-  'Mercury',
-  'Cobalt',
-  'Quill',
+  'Bloom & Co',
+  'Ridgeline Fitness',
+  'The Corner Cafe',
+  'Sunset Realty',
+  'Maple Dental',
+  'Forge Auto',
+  'Petal & Stem',
+  'Bright Bookkeeping',
 ];
 
 export function LogoCloud() {
@@ -20,7 +20,7 @@ export function LogoCloud() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>
           <p className="text-center text-sm font-medium text-muted-foreground">
-            Powering GenAI at teams from startup to scale
+            Powering growth for small businesses from local shops to online brands
           </p>
         </Reveal>
         <div className="mt-6 overflow-hidden mask-fade-edges">

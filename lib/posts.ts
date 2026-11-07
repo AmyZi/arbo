@@ -2,9 +2,21 @@ import fs from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
 import { remark } from 'remark';
+<<<<<<< HEAD
 import remarkHtml from 'remark-html';
 import readingTime from 'reading-time';
 
+=======
+import remarkGfm from 'remark-gfm';
+import remarkHtml from 'remark-html';
+import readingTime from 'reading-time';
+
+export type FaqEntry = {
+  question: string;
+  answer: string;
+};
+
+>>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
 export type PostMeta = {
   slug: string;
   title: string;
@@ -19,6 +31,14 @@ export type PostMeta = {
 
 export type Post = PostMeta & {
   contentHtml: string;
+<<<<<<< HEAD
+=======
+  metaDescription?: string;
+  targetKeyword?: string;
+  slugOverride?: string;
+  schemaTypes?: string[];
+  faqs?: FaqEntry[];
+>>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
 };
 
 const postsDirectory = path.join(process.cwd(), 'content', 'blog');
@@ -36,11 +56,22 @@ export function getAllPosts(): PostMeta[] {
       title: data.title ?? slug,
       description: data.description ?? '',
       date: data.date ? new Date(data.date).toISOString() : new Date().toISOString(),
+<<<<<<< HEAD
       author: data.author ?? 'GenAI 101',
       authorRole: data.authorRole ?? 'Editorial',
       tags: data.tags ?? [],
       readingTime: text,
       cover: data.cover ?? '',
+=======
+      author: data.author ?? 'Arbo',
+      authorRole: data.authorRole ?? 'Editorial',
+      tags: data.tags ?? [],
+      readingTime: text,
+      // NOTE: was `data.cover`, but the Decap field is named `coverImage`.
+      // Falling back to `data.cover` too in case older posts were written
+      // by hand with that key — remove the fallback once content is clean.
+      cover: data.coverImage ?? data.cover ?? '',
+>>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
     } as PostMeta;
   });
   return posts.sort((a, b) => (a.date < b.date ? 1 : -1));
@@ -52,18 +83,44 @@ export function getPostBySlug(slug: string): Post | null {
   const raw = fs.readFileSync(file, 'utf8');
   const { data, content } = matter(raw);
   const { text } = readingTime(content);
+<<<<<<< HEAD
   const processed = remark().use(remarkHtml).processSync(content);
+=======
+  // remarkGfm must run before remarkHtml — it's what teaches remark to
+  // recognize table syntax (and strikethrough, task lists, autolinks)
+  // in the first place. Without it, `remark` only understands CommonMark,
+  // which has no concept of tables at all — hence the raw `| --- |`
+  // text leaking straight into the rendered HTML.
+  const processed = remark()
+    .use(remarkGfm)
+    .use(remarkHtml, { sanitize: false })
+    .processSync(content);
+>>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
   return {
     slug,
     title: data.title ?? slug,
     description: data.description ?? '',
     date: data.date ? new Date(data.date).toISOString() : new Date().toISOString(),
+<<<<<<< HEAD
     author: data.author ?? 'GenAI 101',
     authorRole: data.authorRole ?? 'Editorial',
     tags: data.tags ?? [],
     readingTime: text,
     cover: data.cover ?? '',
     contentHtml: processed.toString(),
+=======
+    author: data.author ?? 'Arbo',
+    authorRole: data.authorRole ?? 'Editorial',
+    tags: data.tags ?? [],
+    readingTime: text,
+    cover: data.coverImage ?? data.cover ?? '',
+    contentHtml: processed.toString(),
+    metaDescription: data.metaDescription ?? undefined,
+    targetKeyword: data.targetKeyword ?? undefined,
+    slugOverride: data.slugOverride ?? undefined,
+    schemaTypes: data.schemaTypes ?? [],
+    faqs: data.faqs ?? [],
+>>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
   };
 }
 
@@ -80,4 +137,8 @@ export function formatDate(iso: string): string {
     month: 'short',
     day: 'numeric',
   });
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804

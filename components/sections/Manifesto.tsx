@@ -14,11 +14,27 @@ export function Manifesto() {
             The problem
           </span>
           <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Most GenAI features die in production.
+            How We Help Small Businesses Rank and Convert.
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
-            Not because the model is bad — because the infrastructure around it
-            is. We built GenAI 101 to fix the part nobody sees.
+            Most small business marketing fails for one simple reason: it
+            wasn&apos;t built for small businesses. Generic agencies and
+            one-size-fits-all software hand you a dashboard full of numbers
+            and call it a strategy — leaving you to figure out how to
+            actually grow your small business on your own.
+          </p>
+          <p className="mt-4 text-lg text-muted-foreground">
+            We built something different. A system designed specifically to
+            help small business owners attract customers, convert leads, and
+            scale revenue — without the guesswork, the wasted ad spend, or
+            the 80-hour weeks.
+          </p>
+          <p className="mt-4 text-lg text-muted-foreground">
+            This is how you get small business customers on autopilot: clear
+            positioning, a funnel that converts, and automation that works
+            while you sleep. Whether you&apos;re just starting to grow your
+            small business or ready to scale past a revenue plateau, small
+            business marketing shouldn&apos;t feel like a second job.
           </p>
         </Reveal>
 
@@ -58,7 +74,7 @@ export function Manifesto() {
 
         <Reveal className="mt-12 flex justify-center" delay={0.1}>
           <div className="inline-flex items-center gap-2 rounded-full border border-orange-500/20 bg-orange-500/5 px-5 py-2 text-sm font-medium text-foreground">
-            From prompt to production, without the duct tape
+            Stop competing on hustle alone — start scaling with a system
             <ArrowRight className="h-4 w-4 text-orange-500" />
           </div>
         </Reveal>

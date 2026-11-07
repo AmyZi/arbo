@@ -10,6 +10,7 @@ export function Features() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal className="mx-auto max-w-2xl text-center">
           <span className="text-sm font-semibold uppercase tracking-widest text-orange-600 dark:text-orange-400">
+<<<<<<< HEAD
             Capabilities
           </span>
           <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
@@ -18,6 +19,16 @@ export function Features() {
           <p className="mt-4 text-lg text-muted-foreground">
             One runtime for orchestration, evaluation, guardrails, and
             observability. No more stitching together six different tools.
+=======
+            Why it works
+          </span>
+          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            Small Business SEO & Web Engine Built to <GradientText>dominate your market</GradientText>
+          </h2>
+          <p className="mt-4 text-lg text-muted-foreground">
+            One system for customer acquisition, conversion, and automation.
+            No more stitching together six different tools and hoping it works.
+>>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
           </p>
         </Reveal>
 

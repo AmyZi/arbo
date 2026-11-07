@@ -1,5 +1,3 @@
-import { Navbar } from '@/components/Navbar';
-import { Footer } from '@/components/Footer';
 import { Hero } from '@/components/sections/Hero';
 import { LogoCloud } from '@/components/sections/LogoCloud';
 import { Manifesto } from '@/components/sections/Manifesto';
@@ -10,44 +8,23 @@ import { Pricing } from '@/components/sections/Pricing';
 import { FAQ } from '@/components/sections/FAQ';
 import { Newsletter } from '@/components/sections/Newsletter';
 import { siteConfig } from '@/lib/content';
+import { baseNodes, webPage, graph } from "@/lib/schema";
+import { JsonLd } from "@/components/JsonLd";
 
 export default function Home() {
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: siteConfig.name,
-    url: siteConfig.url,
-    description: siteConfig.description,
-    potentialAction: {
-      '@type': 'SubscribeAction',
-      target: `${siteConfig.url}/#newsletter`,
-    },
-  };
-
-  const orgLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: siteConfig.name,
-    url: siteConfig.url,
-    slogan: siteConfig.tagline,
-    sameAs: [
-      'https://twitter.com/genai101',
-      'https://github.com/genai101',
-      'https://www.linkedin.com/company/genai101',
-    ],
-  };
+   const data = graph([
+    ...baseNodes(true),
+    webPage({
+      path: "/",
+      name: "ArboWeb | Web development and SEO for Swedish businesses", // match your real <title>
+      description: siteConfig.description, // match your meta description
+      lang: "en",
+    }),
+  ]);
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(orgLd) }}
-      />
-      <Navbar />
+      <JsonLd data={data} />
       <main>
         <Hero />
         <LogoCloud />
@@ -59,7 +36,6 @@ export default function Home() {
         <FAQ />
         <Newsletter />
       </main>
-      <Footer />
     </>
   );
 }

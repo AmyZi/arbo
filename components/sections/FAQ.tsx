@@ -18,7 +18,11 @@ export function FAQ() {
             FAQ
           </span>
           <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+<<<<<<< HEAD
             Questions, <GradientText>answered</GradientText>
+=======
+            Small Business Web Development & SEO Questions, <GradientText>Answered</GradientText>
+>>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
           </h2>
         </Reveal>
 

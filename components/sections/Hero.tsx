@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import {
   Sparkles,
   ShieldCheck,
@@ -47,7 +48,7 @@ function WorkflowMockup() {
             <span className="h-3 w-3 rounded-full bg-green-400" />
           </div>
           <span className="rounded-md bg-muted px-2.5 py-1 font-mono text-xs text-muted-foreground">
-            workflow.run
+            growth.engine
           </span>
         </div>
 
@@ -108,9 +109,9 @@ function WorkflowMockup() {
         {/* live metrics footer */}
         <div className="mt-5 grid grid-cols-3 gap-3">
           {[
-            { label: 'Latency', value: '342ms' },
-            { label: 'Tokens', value: '1,284' },
-            { label: 'Eval score', value: '0.94' },
+            { label: 'New Leads', value: '+128' },
+            { label: 'Conversion', value: '24%' },
+            { label: 'Revenue Growth', value: '+3.2x' },
           ].map((m) => (
             <div
               key={m.label}
@@ -138,8 +139,8 @@ function WorkflowMockup() {
             <TrendingUp className="h-4 w-4" />
           </div>
           <div>
-            <div className="text-[11px] text-muted-foreground">Eval pass rate</div>
-            <div className="text-sm font-bold text-foreground">98.2%</div>
+            <div className="text-[11px] text-muted-foreground">Lead conversion</div>
+            <div className="text-sm font-bold text-foreground">3.2x</div>
           </div>
         </div>
       </motion.div>
@@ -154,7 +155,7 @@ function WorkflowMockup() {
             <ShieldCheck className="h-4 w-4" />
           </div>
           <div>
-            <div className="text-[11px] text-muted-foreground">Guardrails</div>
+            <div className="text-[11px] text-muted-foreground">Automation</div>
             <div className="text-sm font-bold text-foreground">Active</div>
           </div>
         </div>
@@ -173,7 +174,6 @@ export function Hero() {
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-8">
-          {/* left: copy + capture */}
           <div className="text-center lg:text-left">
             <motion.div
               initial={{ opacity: 0, y: 16 }}
@@ -183,7 +183,7 @@ export function Hero() {
             >
               <GlowBadge>
                 <Sparkles className="h-3.5 w-3.5" />
-                Now with automated evals v2
+                Developer-led web development &amp; SEO
               </GlowBadge>
             </motion.div>
 
@@ -193,63 +193,48 @@ export function Hero() {
               transition={{ duration: 0.6, delay: 0.05 }}
               className="mt-6 font-display text-4xl font-extrabold leading-[1.05] tracking-tighter text-foreground sm:text-5xl lg:text-6xl"
             >
-              Ship generative AI
+              Get found on Google by the customers who are
               <br className="hidden sm:block" />{' '}
-              <GradientText>products that work.</GradientText>
+              <GradientText>ready to buy</GradientText>
             </motion.h1>
 
+            {/* Subheading: a paragraph, not a heading tag */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.12 }}
               className="mx-auto mt-5 max-w-xl text-base text-muted-foreground sm:text-lg lg:mx-0"
             >
-              The production playbook for GenAI. Orchestrate models, automate
-              evaluation, enforce guardrails, and observe every request — all in
-              one runtime built for teams that ship.
+              Web development and SEO for small businesses in Sweden. The developer who
+              builds your website also works on your Google visibility, so there are no
+              account managers in between and nothing gets lost in handoffs. Start with a
+              free SEO analysis and see what&apos;s holding your site back.
             </motion.p>
 
-            <motion.form
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.18 }}
-              onSubmit={(e) => e.preventDefault()}
-              className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row lg:mx-0"
+              className="mt-8 flex justify-center lg:justify-start"
             >
-              <input
-                type="email"
-                required
-                placeholder="you@company.com"
-                aria-label="Email address"
-                className="h-12 flex-1 rounded-xl border border-input bg-background px-4 text-sm shadow-sm outline-none ring-offset-background transition focus:border-orange-500/60 focus:ring-2 focus:ring-orange-500/30"
-              />
-              <button
-                type="submit"
-                className="group inline-flex h-12 items-center justify-center gap-1.5 rounded-xl bg-gradient-warm px-5 text-sm font-semibold text-white shadow-lg shadow-orange-500/25 transition hover:shadow-orange-500/40 hover:brightness-105"
+              <Link
+                href="/get-started?plan=audit"
+                className="group inline-flex h-12 items-center justify-center gap-1.5 rounded-xl bg-gradient-warm px-6 text-sm font-semibold text-white shadow-lg shadow-orange-500/25 transition hover:shadow-orange-500/40 hover:brightness-105"
               >
-                Get Started
+                Get my free SEO analysis
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-              </button>
-            </motion.form>
+              </Link>
+            </motion.div>
 
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.26 }}
-              className="mt-4 flex items-center justify-center gap-2 text-sm text-muted-foreground lg:justify-start"
+              className="mt-4 text-sm text-muted-foreground"
             >
-              <span className="flex -space-x-2">
-                {['bg-orange-500', 'bg-rose-500', 'bg-pink-500', 'bg-amber-500'].map(
-                  (c, i) => (
-                    <span
-                      key={i}
-                      className={`h-6 w-6 rounded-full border-2 border-background ${c}`}
-                    />
-                  )
-                )}
-              </span>
-              Trusted by 12,000+ teams shipping in production
+              Free and no commitment. {/* Replace with a real proof point, e.g. a named client or a measured result */}
             </motion.p>
+
           </div>
 
           {/* right: animated mockup */}

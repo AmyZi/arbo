@@ -1,0 +1,10 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#0f172a"/>
+  <circle cx="980" cy="90" r="260" fill="#f97316" opacity="0.24"/>
+  <circle cx="180" cy="560" r="260" fill="#fb7185" opacity="0.2"/>
+  <rect x="80" y="76" width="1040" height="478" rx="48" fill="white" fill-opacity="0.06" stroke="white" stroke-opacity="0.14"/>
+  <text x="120" y="180" fill="#fb923c" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" letter-spacing="5">ARBOWEB</text>
+  <text x="120" y="290" fill="white" font-family="Arial, Helvetica, sans-serif" font-size="72" font-weight="800">Small Business Web</text>
+  <text x="120" y="378" fill="white" font-family="Arial, Helvetica, sans-serif" font-size="72" font-weight="800">Development &amp; SEO</text>
+  <text x="120" y="458" fill="#cbd5e1" font-family="Arial, Helvetica, sans-serif" font-size="32">Rank locally. Convert visitors. Get more customers.</text>
+</svg>

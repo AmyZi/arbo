@@ -25,7 +25,11 @@ export function Newsletter() {
       // await fetch('/api/newsletter', { method: 'POST', body: JSON.stringify({ email: trimmed }) });
       await new Promise((resolve) => setTimeout(resolve, 900));
       setStatus('success');
+<<<<<<< HEAD
       toast.success('Subscribed! Check your inbox for confirmation.');
+=======
+      toast.success('You\u2019re booked! We\u2019ll reach out within 1 business day.');
+>>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
       setEmail('');
     } catch (err) {
       setStatus('idle');
@@ -53,11 +57,20 @@ export function Newsletter() {
               <Mail className="h-6 w-6" />
             </span>
             <h2 className="mt-5 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+<<<<<<< HEAD
               Get the <GradientText>GenAI production</GradientText> playbook
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
               Weekly insights on shipping GenAI — evaluation patterns, guardrail
               recipes, and postmortems from real production deploys. No fluff.
+=======
+              Your Competitors Are Already <GradientText>Scaling</GradientText>
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
+              Book your free strategy session and discover exactly how to
+              attract more customers and grow your small business — starting
+              this week.
+>>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
             </p>
 
             {status === 'success' ? (
@@ -67,7 +80,11 @@ export function Newsletter() {
                 className="mx-auto mt-8 flex max-w-md items-center justify-center gap-2 rounded-xl border border-green-500/30 bg-green-500/10 px-5 py-3 text-sm font-medium text-green-700 dark:text-green-400"
               >
                 <CheckCircle2 className="h-5 w-5" />
+<<<<<<< HEAD
                 You&apos;re subscribed. Welcome aboard.
+=======
+                You&apos;re booked in. We&apos;ll be in touch shortly.
+>>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
               </motion.div>
             ) : (
               <form
@@ -79,7 +96,11 @@ export function Newsletter() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+<<<<<<< HEAD
                   placeholder="you@company.com"
+=======
+                  placeholder="Enter your best email"
+>>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
                   aria-label="Email address"
                   disabled={status === 'loading'}
                   className="h-12 flex-1 rounded-xl border border-input bg-background px-4 text-sm shadow-sm outline-none ring-offset-background transition focus:border-orange-500/60 focus:ring-2 focus:ring-orange-500/30 disabled:opacity-60"
@@ -92,11 +113,19 @@ export function Newsletter() {
                   {status === 'loading' ? (
                     <>
                       <Loader2 className="h-4 w-4 animate-spin" />
+<<<<<<< HEAD
                       Subscribing...
                     </>
                   ) : (
                     <>
                       Subscribe
+=======
+                      Submitting...
+                    </>
+                  ) : (
+                    <>
+                      Claim My Free Growth Session
+>>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
                       <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                     </>
                   )}
@@ -105,7 +134,11 @@ export function Newsletter() {
             )}
 
             <p className="mt-4 text-xs text-muted-foreground">
+<<<<<<< HEAD
               Join 12,000+ engineers. Unsubscribe anytime.
+=======
+              We&apos;ll show you your custom growth plan. No spam, ever.
+>>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
             </p>
           </div>
         </motion.div>

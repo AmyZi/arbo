@@ -203,3 +203,35 @@
     @apply my-8 border-border/60;
   }
 }
+<<<<<<< HEAD
+=======
+.prose-content table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+}
+
+.prose-content th,
+.prose-content td {
+  border: 1px solid hsl(var(--border));
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+.prose-content th {
+  background-color: hsl(var(--muted));
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .prose-content th,
+  .prose-content td {
+    padding: 0.4rem 0.5rem;
+    font-size: 0.8125rem;
+  }
+}
+>>>>>>> e164d5adc168fdd8bd752b2b4c7d6820a908e804
