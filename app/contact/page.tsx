@@ -65,7 +65,6 @@ export default function ContactPage() {
   return (
     <>
       <JsonLd data={data} />
-      <Navbar />
       <main className="pt-16">
         <PageBackground>
           <div className="grid items-center gap-12 lg:grid-cols-2">
@@ -135,7 +134,6 @@ export default function ContactPage() {
           </div>
         </PageBackground>
       </main>
-      <Footer />
     </>
   );
 }
